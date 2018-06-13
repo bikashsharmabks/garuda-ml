@@ -1,0 +1,11 @@
+version: "3"
+
+services: 
+  garuda-extract:
+    container_name: garuda-extract
+    build: ./extract
+    hostname: garuda-extraction
+    volumes:
+      - ./extract:/app
+      - /app/node_modules
+      - ./data:/app/data
