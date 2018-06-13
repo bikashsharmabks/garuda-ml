@@ -1,7 +1,8 @@
 var Twitter = require('twitter'),
 	fs = require('fs'),
 	twitterConfig = require('../config.json'),
-	Promise = require('bluebird');
+	Promise = require('bluebird'),
+	Json2csvParser = require('json2csv').Parser;
 
 var client = new Twitter(twitterConfig);
 
@@ -23,7 +24,6 @@ function getFriendsInfo(screen_name) {
 				return reject(error);
 			else {
 				var friendsData = [];
-
 				for (var i = 0; i < usersList.users.length; i++) {
 					if (usersList.users[i].lang == 'en') {
 						friendsData.push({
@@ -58,20 +58,22 @@ function getFriendsInfo(screen_name) {
 					}
 				}
 
-				const items = friendsData
-				const replacer = (key, value) => value === null ? '' : value
-				const header = Object.keys(items[0])
-				let csv = items.map(row => header.map(fieldName => JSON.stringify(row[fieldName], replacer)).join(','))
-				csv.unshift(header.join(','))
-				csv = csv.join('\r\n')
-
-				fs.writeFile('./data/' + screen_name + '_friends.csv', csv, function(err) {
-					if (err) {
-						return console.log(err);
+				try {
+					const fields = Object.keys(friendsData[0])
+					const opts = {
+						fields
 					}
-					console.log('FILE SUCCESSFULLY WRITTEN!\n');
-				});
-
+					const parser = new Json2csvParser(opts);
+					const csv = parser.parse(friendsData);
+					fs.writeFile('./data/' + screen_name + '_friends.csv', csv, function(err) {
+						if (err) {
+							return console.log(err);
+						}
+						console.log('FILE SUCCESSFULLY WRITTEN!\n');
+					});
+				} catch (err) {
+					console.error(err);
+				}
 				return resolve(friendsData);
 			}
 		});
@@ -126,19 +128,22 @@ function getFollowersInfo(screen_name) {
 					}
 				}
 
-				const items = followersData
-				const replacer = (key, value) => value === null ? '' : value
-				const header = Object.keys(items[0])
-				let csv = items.map(row => header.map(fieldName => JSON.stringify(row[fieldName], replacer)).join(','))
-				csv.unshift(header.join(','))
-				csv = csv.join('\r\n')
-
-				fs.writeFile('./data/' + screen_name + '_followers.csv', csv, function(err) {
-					if (err) {
-						return console.log(err);
+				try {
+					const fields = Object.keys(followersData[0])
+					const opts = {
+						fields
 					}
-					console.log('FILE SUCCESSFULLY WRITTEN!\n');
-				});
+					const parser = new Json2csvParser(opts);
+					const csv = parser.parse(followersData);
+					fs.writeFile('./data/' + screen_name + '_followers.csv', csv, function(err) {
+						if (err) {
+							return console.log(err);
+						}
+						console.log('FILE SUCCESSFULLY WRITTEN!\n');
+					});
+				} catch (err) {
+					console.error(err);
+				}
 
 				return resolve(usersList);
 			}
@@ -146,3 +151,18 @@ function getFollowersInfo(screen_name) {
 
 	});
 }
+
+
+// const items = friendsData
+// const replacer = (key, value) => value === null ? '' : value
+// const header = Object.keys(items[0])
+// let csv = items.map(row => header.map(fieldName => JSON.stringify(row[fieldName], replacer)).join(','))
+// csv.unshift(header.join(','))
+// csv = csv.join('\r\n')
+
+// fs.writeFile('./data/' + screen_name + '_friends.csv', csv, function(err) {
+// 	if (err) {
+// 		return console.log(err);
+// 	}
+// 	console.log('FILE SUCCESSFULLY WRITTEN!\n');
+// });
