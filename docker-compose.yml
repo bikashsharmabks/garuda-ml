@@ -5,8 +5,16 @@ services:
     container_name: garuda-extract
     build: ./extract
     hostname: garuda-extraction
-    tty: true
     volumes:
       - ./extract:/app
       - /app/node_modules
       - ./data:/app/data
+  garuda-ml:
+    container_name: garuda-ml
+    image: tensorflow/tensorflow
+    hostname: garuda-ml
+    ports:
+      - 8888:8888
+    volumes:
+      - ./ml:/notebooks
+      - ./data:/data
