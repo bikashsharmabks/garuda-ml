@@ -100,8 +100,13 @@ print("Test count {features/labels}: %s/%s" % (len(test_features), len(test_labe
 #train_dataset = train_input_fn(train_features, train_labels, BATCH_SIZE)
 #print(train_dataset)
 
+#create a model for training
 model = model_fn()
+
+#train the training set with model
 model.fit(train_features, train_labels, epochs=EPOCHS)
+
+#evaluate the model on test set
 loss, accuracy = model.evaluate(test_features, test_labels)
 print(loss)
 print(accuracy)
