@@ -1,7 +1,7 @@
 
 # coding: utf-8
 
-# In[1]:
+# In[ ]:
 
 
 import tensorflow as tf
@@ -11,10 +11,11 @@ import os
 tf.enable_eager_execution()
 
 
-# In[90]:
+# In[136]:
 
 
 from sklearn import preprocessing, cross_validation
+import numpy as np
 
 data_path = '/data/users-csv.csv'
 print("TensorFlow version: {}".format(tf.VERSION))
@@ -22,10 +23,12 @@ print("Eager execution: {}".format(tf.executing_eagerly()))
 
 COLUMN_NAMES = ['screen_name','name','description', 'class']
 
-CLASSES = ['sports','technology','entertainment', 'politics',
-           'music','legal','medical','education','journalism']
+# CLASSES = ['sports','technology','entertainment', 'politics',
+#            'music','legal','medical','education','journalism']
 
-NUM_CLASSES = 4 #len(CLASSES)
+CLASSES = ['sports', 'politics', 'education','journalism']
+
+NUM_CLASSES = len(CLASSES)
 MAX_VOCABULARY_SIZE = 1000
 BATCH_SIZE = 100
 EPOCHS = 5
@@ -41,7 +44,8 @@ def raw_data_fn(y_name='class'):
     
     #append name and description
     name_description = data['name'].astype(str) + ' ' + data['description']   
-   
+    #print(name_description)
+    
     #get labels 
     classes = data['class']
 
@@ -51,17 +55,16 @@ def raw_data_fn(y_name='class'):
     
     # define encoder and make labels
     encoder = preprocessing.LabelBinarizer()
-    encoder.fit(classes)
+    encoder.fit(CLASSES)
     
     #make features and labels
     labels = encoder.transform(classes)
     features = tokenizer.texts_to_matrix(name_description, mode='tfidf')
        
-    return (features, labels)
+    return (features, labels, tokenizer)
 
-def load_data_fn(features, labels, test_size=0.2):
+def load_data_fn(features, labels, test_size=0.3):
     return cross_validation.train_test_split(features, labels, test_size=test_size, random_state=42)
-   
 
 def train_input_fn(features, labels, batch_size):
     dataset = tf.data.Dataset.from_tensor_slices((features,labels))
@@ -87,9 +90,19 @@ def model_fn():
 
     model.summary()
     return model
+
+def predict_fn(model, labels, tokenizer, name, description):
+    name_description = name + ' ' + description
+
+    feature = tokenizer.texts_to_matrix(np.array([name_description]), mode='tfidf')
+    prediction = model.predict(feature)
     
+    predicted_label = CLASSES[np.argmax(prediction[0])]
+    return predicted_label
     
-features, labels = raw_data_fn()
+
+    
+features, labels, tokenizer = raw_data_fn()
 #print(features[0])
 #print(labels[0])
 
@@ -97,8 +110,8 @@ train_features, test_features, train_labels, test_labels = load_data_fn(features
 print("Train count {features/labels}: %s/%s" % (len(train_features), len(train_labels)))
 print("Test count {features/labels}: %s/%s" % (len(test_features), len(test_labels)))
 
-#train_dataset = train_input_fn(train_features, train_labels, BATCH_SIZE)
-#print(train_dataset)
+# #train_dataset = train_input_fn(train_features, train_labels, BATCH_SIZE)
+# #print(train_dataset)
 
 #create a model for training
 model = model_fn()
@@ -108,6 +121,11 @@ model.fit(train_features, train_labels, epochs=EPOCHS)
 
 #evaluate the model on test set
 loss, accuracy = model.evaluate(test_features, test_labels)
-print(loss)
-print(accuracy)
+print("Loss : %s   Accuracy: %s" % (loss, accuracy))
+
+name = "Garrett Mitchell"
+description = "Professional hockey player. Married to an amazing wife, Father of two amazing girls. Born and raised in Saskatchewan."
+
+predicted_label = predict_fn(model, labels, tokenizer, name, description)
+print("\nname: %s \ndescription: %s \npredicted class: %s" % (name, description, predicted_label))
 
