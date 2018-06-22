@@ -1,0 +1,6 @@
+psutil
+Flask
+tensorflow
+h5py
+pandas
+scikit-learn
