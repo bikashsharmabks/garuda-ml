@@ -17,17 +17,19 @@ SERVE_PORT = os.environ['SERVE_PORT']
 @app.route("/api/predictions/gender", methods = ['POST'])
 def predict_gender():
 	req_body = request.get_json()
-	name = req_body["name"];
-	result = pred.predict_gender(name)
-	response = Response(
-        response=json.dumps({
+	if(not bool(req_body["name"])):
+		response = Response(response="name not found.",status=400)
+	else:
+		name = req_body["name"];
+		result = pred.predict_gender(name)
+		response = Response(response=json.dumps({
         	"name": name,
         	"gender":result[0],
         	"probability": str(round(result[1]*100,2)) + " %"
         }),
         status=200,
         mimetype='application/json'
-    )
+    	)
 	return response
 
 
