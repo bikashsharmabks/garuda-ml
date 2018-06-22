@@ -8,12 +8,12 @@ import numpy as np
 import pytesseract
 from PIL import Image
 import glob
-import unicodecsv as csv
+import csv
 import os
 import shutil
 import re
 
-PATH = "../../data/card-detection/features/"
+PATH = "../data/card-detection/features/"
 
 src_path = PATH + '*.png'
 temp_path = PATH + 'temp/'
@@ -91,7 +91,7 @@ for file in files:
 
 #create csv and save 
 keys = result[0].keys()
-with open(PATH+ 'features.csv', 'wb') as output_file:
+with open(PATH+ 'features.csv', 'w') as output_file:
     dict_writer = csv.DictWriter(output_file, keys)
     dict_writer.writeheader()
     dict_writer.writerows(result)
