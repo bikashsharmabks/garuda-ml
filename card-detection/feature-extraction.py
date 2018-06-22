@@ -11,6 +11,7 @@ import glob
 import unicodecsv as csv
 import os
 import shutil
+import re
 
 PATH = "../../data/card-detection/features/"
 
@@ -53,6 +54,10 @@ def get_image_info(img_path):
         hasFace = True
     else:
         hasFace = False
+
+    data = data.replace('\n', ' ')
+    data = re.sub('\W+',' ', data )
+
     info = {
         'data': data.replace('\n', ' '),
         'hasFace': hasFace
@@ -86,7 +91,7 @@ for file in files:
 
 #create csv and save 
 keys = result[0].keys()
-with open(PATH+ 'card_detection_info.csv', 'wb') as output_file:
+with open(PATH+ 'features.csv', 'wb') as output_file:
     dict_writer = csv.DictWriter(output_file, keys)
     dict_writer.writeheader()
     dict_writer.writerows(result)
