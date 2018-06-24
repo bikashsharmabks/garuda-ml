@@ -13,7 +13,7 @@ import os
 import shutil
 import re
 
-PATH = "../data/card-detection/features/"
+PATH = "/data/features/"
 
 src_path = PATH + '*.png'
 temp_path = PATH + 'temp/'
@@ -67,7 +67,7 @@ def get_image_info(img_path):
 
 def get_image_contour(img_path):
     split_path = img_path.split('/')
-    image_contour_path = contour_path + 'contours_'+ split_path[5]
+    image_contour_path = contour_path + 'contours_'+ split_path[len(split_path)-1]
     gImg = cv2.imread(img_path)
     gImg = cv2.cvtColor(gImg, cv2.COLOR_BGR2GRAY)
     edges = cv2.Canny(gImg,100,200)
@@ -82,7 +82,7 @@ def get_image_contour(img_path):
 # result.append(info)
 # print(result)
     
-files=glob.glob(src_path)   
+files=glob.glob(src_path)
 for file in files:
     info = get_image_info(file)
     image_contour = get_image_contour(file)

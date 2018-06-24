@@ -9,6 +9,7 @@ services:
   #     - ./extract:/app
   #     - /app/node_modules
   #     - ./data:/app/data
+
   gender-classification:
     container_name: gender-classification
     image: tensorflow/tensorflow
@@ -23,3 +24,18 @@ services:
       - ./gender-classification:/app
       - ./gender-classification/notebook:/notebooks
       - ./data/gender-classification:/data
+
+  card-detection:
+    container_name: card-detection
+    image: dbmobilelife/docker-python-opencv-tesseract
+    build: ./card-detection
+    hostname: card-detection
+    ports:
+      - 10002:10002
+    environment:
+      SERVE_PORT: 10002 
+    volumes:
+      - ./card-detection:/app
+      - ./data/card-detection:/data  
+
+

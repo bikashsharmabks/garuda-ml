@@ -1,5 +1,5 @@
 # Using official python runtime base image
-FROM tensorflow/tensorflow
+FROM dbmobilelife/docker-python-opencv-tesseract
 
 #set application directory
 WORKDIR /app
@@ -10,11 +10,10 @@ ADD requirements.txt /app/requirements.txt
 #copy code from current folder to /app folder
 ADD . /app
 
-RUN pip install pathlib && \
-	pip install -r requirements.txt
+RUN pip install -r requirements.txt
 
-#Make expose port 10001
-EXPOSE 10001
+#Make expose port 10002
+EXPOSE 10002
 
-#run serve.py on launch of docker
-CMD ["python", "serve.py"]
+#run app.py on launch of docker
+CMD ["python", "feature-extraction.py"] #temporary
