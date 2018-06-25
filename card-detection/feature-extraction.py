@@ -1,7 +1,8 @@
 
 # coding: utf-8
 
-# In[ ]:
+# In[2]:
+
 
 import cv2
 import numpy as np
@@ -28,11 +29,18 @@ if not os.path.exists(temp_path):
 if not os.path.exists(contour_path):
     os.makedirs(contour_path)
 
-result = []
+
+# In[15]:
+
+
+def resize_image(gImg):
+    resized_gImg = cv2.resize(gImg, (1050, 600)) 
+    return resized_gImg
 
 def get_image_info(img_path):
-    info = {}
     gImg = cv2.imread(img_path)
+    gImg = resize_image(gImg) #resize image
+    
     gImg = cv2.cvtColor(gImg, cv2.COLOR_BGR2GRAY)
 
     # Apply dilation and erosion to remove some noise
@@ -45,7 +53,7 @@ def get_image_info(img_path):
     # Recognize text with tesseract
     data = pytesseract.image_to_string(Image.open(temp_path + "removed_noise_temp.png"))
     
-    haar_face_cascade = cv2.CascadeClassifier('classifier/haarcascade_frontalface_alt.xml')
+    haar_face_cascade = cv2.CascadeClassifier('../classifier/haarcascade_frontalface_alt.xml')
 
     #multiscale (some images may be closer to camera than others)
     faces = haar_face_cascade.detectMultiScale(gImg, scaleFactor=1.1, minNeighbors=1, minSize=(1,1))
@@ -54,39 +62,51 @@ def get_image_info(img_path):
         hasFace = True
     else:
         hasFace = False
-
+    
+    #clean data
     data = data.replace('\n', ' ')
-    data = re.sub('\W+',' ', data )
-
+    data = re.sub('\W+',' ', data ) 
+    
+    info = {}
     info = {
-        'data': data.replace('\n', ' '),
+        'data': data,
         'hasFace': hasFace
     }
     return info
-
 
 def get_image_contour(img_path):
     split_path = img_path.split('/')
     image_contour_path = contour_path + 'contours_'+ split_path[len(split_path)-1]
     gImg = cv2.imread(img_path)
+    gImg = resize_image(gImg) 
     gImg = cv2.cvtColor(gImg, cv2.COLOR_BGR2GRAY)
     edges = cv2.Canny(gImg,100,200)
     cv2.imwrite(image_contour_path, edges)
     return image_contour_path
 
 
-# test for single file
-# info = get_image_info(PATH+'DL_4.png')
-# image_contour = get_image_contour(PATH+'DL_4.png')
-# info['image_contour'] = image_contour
+def process_image(img_path):
+    info = get_image_info(img_path)
+    image_contour = get_image_contour(img_path) #edge image
+    info['image_contour'] = image_contour
+    return info
+    
+    
+
+
+# In[17]:
+
+
+result = []
+
+#test for single file
+# info = process_image(PATH+'DL_4.png')
 # result.append(info)
 # print(result)
     
-files=glob.glob(src_path)
+files=glob.glob(src_path)   
 for file in files:
-    info = get_image_info(file)
-    image_contour = get_image_contour(file)
-    info['image_contour'] = image_contour
+    info = process_image(file)
     result.append(info)
 
 #create csv and save 
@@ -100,8 +120,4 @@ with open(PATH+ 'features.csv', 'w') as output_file:
 shutil.rmtree(temp_path, ignore_errors=True)
 
 print("File saved succesfully")
-
-    
-
-
 
