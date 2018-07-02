@@ -33,9 +33,11 @@ services:
     ports:
       - 10002:10002
     environment:
-      SERVE_PORT: 10002 
+      SERVE_PORT: 10002
+    tty: true
     volumes:
       - ./card-detection:/app
+      - ./gender-classification/notebook:/notebooks
       - ./data/card-detection:/data  
 
 

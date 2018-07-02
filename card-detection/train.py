@@ -1,11 +1,9 @@
 from keras import applications
 
 from keras import optimizers 
-from keras.preprocessing.image import load_img
-from keras.preprocessing.image import img_to_array
+from keras.preprocessing.image import load_img, img_to_array, ImageDataGenerator
 from keras.layers import Dropout, Flatten, Dense
 from keras.models import Sequential, Model, load_model
-from keras.preprocessing.image import ImageDataGenerator
 from sklearn import preprocessing
 from sklearn.model_selection import train_test_split
 from PIL import Image
@@ -125,9 +123,9 @@ def predict_fn(model, labels, image_path):
   features_predict = numpy.array(features_predict)
   
   prediction = model.predict(features_predict)
-    
   predicted_label = CLASSES[numpy.argmax(prediction[0])]
-  return predicted_label
+  predicted_proba = numpy.amax(prediction[0]) *100
+  return (predicted_label, predicted_proba)
 
 
 features, labels = data_prep()
@@ -157,8 +155,9 @@ model = load_model(MODEL_SAVE_PATH)
 
 
 image_path = DATA_PATH + 'test_7.png'
-predicted_label = predict_fn(model, labels, image_path)
+predicted_label, predicted_proba = predict_fn(model, labels, image_path)
  
-print("\npredicted class: %s" % (predicted_label))
+print("\npredicted class: %s \nprobability: %s" % (predicted_label, predicted_proba))
+
 
   
