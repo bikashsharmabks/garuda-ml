@@ -1,11 +1,25 @@
 {
-  "name": "dashboard",
-  "version": "0.1.0",
+  "name": "twitter-ui",
+  "version": "1.0.0",
   "private": true,
+  "homepage": ".",
+  "devDependencies": {
+    "gulp": "^3.9.1",
+    "gulp-concat": "^2.6.0",
+    "gulp-sass": "^2.3.2",
+    "react-scripts": "0.9.5"
+  },
   "dependencies": {
-    "react": "^16.4.1",
-    "react-dom": "^16.4.1",
-    "react-scripts": "1.1.4"
+    "moment": "^2.22.2",
+    "package.json": "^2.0.1",
+    "react": "15.4.2",
+    "react-breadcrumbs": "^1.5.2",
+    "react-dom": "^15.6.2",
+    "react-ladda": "5.0.6",
+    "react-router": "3.0.3",
+    "react-select": "^1.0.0-rc.3",
+    "reactstrap": "4.5.0",
+    "superagent": "^3.8.3"
   },
   "scripts": {
     "start": "react-scripts start",

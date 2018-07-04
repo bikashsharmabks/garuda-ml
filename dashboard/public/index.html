@@ -1,17 +1,15 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="theme-color" content="#000000">
-    <!--
-      manifest.json provides metadata used when your web app is added to the
-      homescreen on Android. See https://developers.google.com/web/fundamentals/engage-and-retain/web-app-manifest/
-    -->
-    <link rel="manifest" href="%PUBLIC_URL%/manifest.json">
+    <meta name="description" content="Garuda Dashboard">
+    <meta name="author" content="Shruti Tanwar">
+    <meta name="keyword" content="Analytics, AI, Dashboard">
     <link rel="shortcut icon" href="%PUBLIC_URL%/favicon.ico">
     <!--
-      Notice the use of %PUBLIC_URL% in the tags above.
+      Notice the use of %PUBLIC_URL% in the tag above.
       It will be replaced with the URL of the `public` folder during the build.
       Only files inside the `public` folder can be referenced from the HTML.
 
@@ -19,12 +17,39 @@
       work correctly both with client-side routing and a non-root public URL.
       Learn how to configure a non-root public URL by running `npm run build`.
     -->
-    <title>React App</title>
+    <title>Dashboard</title>
+
+    <!-- Icons -->
+    <link href="%PUBLIC_URL%/css/font-awesome.min.css" rel="stylesheet">
+    <link href="%PUBLIC_URL%/css/simple-line-icons.css" rel="stylesheet">
+
+    <!-- Main styles for this application -->
+    <link href="%PUBLIC_URL%/css/style.css" rel="stylesheet">
+
   </head>
-  <body>
-    <noscript>
-      You need to enable JavaScript to run this app.
-    </noscript>
+
+  <!-- BODY options, add following classes to body to change options
+
+    // Header options
+    1. '.header-fixed'					- Fixed Header
+
+    // Sidebar options
+    1. '.sidebar-fixed'					- Fixed Sidebar
+    2. '.sidebar-hidden'				- Hidden Sidebar
+    3. '.sidebar-off-canvas'		- Off Canvas Sidebar
+    4. '.sidebar-compact'				- Compact Sidebar Navigation (Only icons)
+
+    // Aside options
+    1. '.aside-menu-fixed'			- Fixed Aside Menu
+    2. '.aside-menu-hidden'			- Hidden Aside Menu
+    3. '.aside-menu-off-canvas'	- Off Canvas Aside Menu
+
+    // Footer options
+    1. 'footer-fixed'						- Fixed footer
+
+  -->
+
+  <body class="app header-fixed">
     <div id="root"></div>
     <!--
       This HTML file is a template.
@@ -33,8 +58,20 @@
       You can add webfonts, meta tags, or analytics to this file.
       The build step will place the bundled scripts into the <body> tag.
 
-      To begin the development, run `npm start` or `yarn start`.
-      To create a production bundle, use `npm run build` or `yarn build`.
+      To begin the development, run `npm start`.
+      To create a production bundle, use `npm run build`.
     -->
   </body>
+
+
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+<!-- <script async src="https://www.googletagmanager.com/gtag/js?id=UA-120668996-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-120668996-1');
+</script> -->
+
 </html>
