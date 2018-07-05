@@ -13796,7 +13796,8 @@ base-chart.chart {
   width: 48px; }
 
 .custom-container {
-  height: auto; }
+  height: auto;
+  background: linear-gradient(to bottom, #1da1f2, #87e9fa); }
 
 .button-custom {
   font-size: 40px;
@@ -13816,7 +13817,8 @@ base-chart.chart {
   margin-left: 20%;
   margin-bottom: 20%;
   width: 40%;
-  border: none; }
+  border: none;
+  background-color: transparent; }
 
 .smaller {
   font-size: 40%;
