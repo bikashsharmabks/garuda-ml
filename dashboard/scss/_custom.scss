@@ -1,5 +1,3 @@
-// Here you can add other styles
-
 .sidebar {
   .sidebar-nav, ul.nav {
     width: $sidebar-width - 16px;
@@ -13,39 +11,32 @@
 	}
 }
 
-
-.hashtags {
-	margin:auto;
-	font-size: 1em !important;
+.custom-container {
+  height: auto;
+  //background-color: #87d7fa;
 }
 
-.container {
-  margin-top: 70px;
-  margin-bottom: 70px;
-}
-
-.button {
-    background-color: Transparent;
-    background-repeat:no-repeat;
-    border: none;
-    cursor:pointer;
-    overflow: hidden;
-    outline:none;
-    justify-content: center;
-    display: flex;
-    color: #00abff;
+.button-custom {
+  font-size: 40px;
+  padding: 0;
 }
 
 .card-deck {
-	a.card.hashtags {
-		text-decoration: none !important;
-		color: $body-color;
-	}
+  margin-top: 5%;
+  margin-right: 10%;
+  margin-left: 10%;
+  margin-bottom: 5%;
+  width: 40%;
+  height: fit-content;
+}
 
-	a.card.hashtags:hover {
-		background-color: $gray-lightest;
-	}
-	
+.custom-card {
+  margin-top: 20%;
+  margin-right: 20%;
+  margin-left: 20%;
+  margin-bottom: 20%;
+  width: 40%;
+  border: none;
 }
 
 .smaller {

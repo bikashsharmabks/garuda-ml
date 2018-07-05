@@ -13795,31 +13795,28 @@ base-chart.chart {
   height: 48px;
   width: 48px; }
 
-.hashtags {
-  margin: auto;
-  font-size: 1em !important; }
+.custom-container {
+  height: auto; }
 
-.container {
-  margin-top: 70px;
-  margin-bottom: 70px; }
+.button-custom {
+  font-size: 40px;
+  padding: 0; }
 
-.button {
-  background-color: Transparent;
-  background-repeat: no-repeat;
-  border: none;
-  cursor: pointer;
-  overflow: hidden;
-  outline: none;
-  justify-content: center;
-  display: flex;
-  color: #00abff; }
+.card-deck {
+  margin-top: 5%;
+  margin-right: 10%;
+  margin-left: 10%;
+  margin-bottom: 5%;
+  width: 40%;
+  height: fit-content; }
 
-.card-deck a.card.hashtags {
-  text-decoration: none !important;
-  color: #2a2c36; }
-
-.card-deck a.card.hashtags:hover {
-  background-color: #f8f9fa; }
+.custom-card {
+  margin-top: 20%;
+  margin-right: 20%;
+  margin-left: 20%;
+  margin-bottom: 20%;
+  width: 40%;
+  border: none; }
 
 .smaller {
   font-size: 40%;

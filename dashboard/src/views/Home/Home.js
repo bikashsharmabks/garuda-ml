@@ -1,66 +1,65 @@
-import React, { Component } from 'react';
-//import { Link } from 'react-router';
-//import superagent from 'superagent';
-//import moment from 'moment';
-
-// <div class="btn-group hidden-sm-down hidden-md-down" role="group" aria-label="Card buttons">
-//                       <a href="#" class="card-link" >Try this API</a>
-//                     </div>
+import React, {Component} from 'react';
+// import { Link } from 'react-router'; import superagent from 'superagent';
+// import moment from 'moment';
 
 class Home extends Component {
-	constructor(props) {
-		super(props);
-		this.state = {
-			hashtags: [],
-		};
-	}
+  constructor(props) {
+    super(props);
+    this.state = {
+    };
+  }
 
-	componentDidMount() {
-		this.getHashtags();
-	}
-
-	// getHashtags() {
-	// 	superagent.get('/api/hashtags')
-	// 		.set('Accept', 'application/json')
-	// 		.end((error, response) => {
-	// 			if (error) {
-	// 				console.log(error)
-	// 			} else {
-	// 				this.setState({
-	// 					hashtags: response.body
-	// 				});
-	// 			}
-	// 		});
-	// }
+  componentDidMount() {
+  }
 
   render() {
+    return (
 
-  	return (
-    
-	  	<div className="container">
-
-        	<div className="row justify-content-md-center">
-          		<div className="card hashtags">
-            		<div className="card-body p-1">
-              			<h4 className="card-title brand-success">Gender Classification</h4>
-                    <div className="button" onclick="addTextBox()">
-                        Try this API
-                    </div>
-          			</div>
-          		</div>
+      <div className="custom-container">
+        <div
+          style={{
+          "padding-left": 10 + '%',
+          "padding-top": 5 + '%'
+        }}>
+          <h1>P10 Labs</h1>
+        </div>
+        <div className="container">
+          <div className="row">
+            <div className="col-sm-4">
+              <div className="card custom-card">
+                <div className="card-body text-center">
+                  <h5 className="card-title text-muted">Gender Classification</h5>
+                  <a href="#" type="button" className="btn-floating button-custom">
+                    <i className="fa fa-venus-mars" aria-hidden="false"></i>
+                  </a>
+                </div>
+              </div>
+            </div>
+            <div className="col-sm-4">
+              <div className="card custom-card">
+                <div className="card-body text-center">
+                  <h5 className="card-title text-muted">Text Classification</h5>
+                  <a href="#" type="button" className="btn-floating button-custom">
+                    <i className="fa fa-file-text-o" aria-hidden="false"></i>
+                  </a>
+                </div>
+              </div>
+            </div>
+            <div className="col-sm-4">
+              <div className="card custom-card">
+                <div className="card-body text-center">
+                  <h5 className="card-title text-muted">Image Classification</h5>
+                  <a href="#" type="button" className="btn-floating button-custom">
+                    <i className="fa fa-camera" aria-hidden="false"></i>
+                  </a>
+                </div>
+              </div>
+            </div>
           </div>
-
-        <div className="row justify-content-center">  
-            API 2
         </div>
       </div>
-    
-	  )
+    )
   }
 }
-
-
-
-
 
 export default Home;

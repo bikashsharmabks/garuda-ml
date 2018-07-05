@@ -11,13 +11,11 @@ class Full extends Component {
     return (
       <div className="app">
         <Header />
-        <div className="app-body">
-          <main className="main">
-            <div className="container-fluid">
+          <div className="app-body">
+            <main className="main">   
               {this.props.children}
-            </div>
-          </main>
-        </div>
+            </main>
+          </div>
         <Footer />
       </div>
     );
