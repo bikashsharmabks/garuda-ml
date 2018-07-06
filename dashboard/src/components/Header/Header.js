@@ -20,7 +20,7 @@ class Header extends Component {
   render() {
     return (
       <header className="app-header navbar">
-        <a className="navbar-brand" href="#"></a>
+        <a className="navbar-brand navbar-brand-custom" href="#"></a>
         <div className="nav navbar nav-item hidden-md-down">
           <div className="h4 mt-auto">Dashboard</div>
         </div>

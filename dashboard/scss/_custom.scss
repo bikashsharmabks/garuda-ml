@@ -13,13 +13,47 @@
 
 .custom-container {
   height: auto;
-  //background-color: #87d7fa;
   background: linear-gradient(to bottom,  #1da1f2,  #87e9fa);
 }
 
-.button-custom {
+.card-title-custom {
+  color: white;
+}
+
+.i-custom {
+  color: #2072d8
+}
+
+.text-container {
+ padding: 5%;
+}
+
+.button-floating-custom2 {
+  width: 0;
+  font-size: 30px;
+}
+
+.custom-text {
+  border: 0;
+  border-bottom: 1px solid;
+  margin: 5%;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  width: 50%;
+  font-family: unset;
+}
+.button-floating-custom {
   font-size: 40px;
   padding: 0;
+}
+
+.btn-primary-custom {
+  padding: 0;
+  border-radius: 15px;
+  cursor: pointer;
+  width: 80%;
+  height: 30px;
+  //margin-left: 20%;
 }
 
 .card-deck {
@@ -50,6 +84,11 @@
 	font-size: 150%;
 	font-weight: bold;
 	color: $gray-dark
+}
+.navbar-brand-custom {
+  border-bottom : 0 !important;
+  padding:0 !important;
+  background-color: white !important;
 }
 
 $w : 200px;
