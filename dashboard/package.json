@@ -1,15 +1,16 @@
 {
-  "name": "twitter-ui",
+  "name": "dashboard",
   "version": "1.0.0",
   "private": true,
   "homepage": ".",
   "devDependencies": {
-    "gulp": "^3.9.1",
+    "gulp": "^4.0.0",
     "gulp-concat": "^2.6.0",
-    "gulp-sass": "^2.3.2",
-    "react-scripts": "0.9.5"
+    "gulp-sass": "^4.0.1",
+    "react-scripts": "^1.1.4"
   },
   "dependencies": {
+    "hoek": "^5.0.3",
     "moment": "^2.22.2",
     "package.json": "^2.0.1",
     "react": "15.4.2",
