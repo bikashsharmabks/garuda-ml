@@ -42,13 +42,13 @@ services:
 
   # dashboard:
   #   container_name: dashboard
-  #   image: node:9.6.1
-  #   build: ./dashboard
-  #   hostname: dashboard
+  #   build: 
+  #   context: .
   #   volumes:
-  #     - './dashboard/src:/app'
-  #     - './dashboard/app/node_modules'
+  #    - '.:/usr/src/app'
+  #    - '/usr/src/app/node_modules'
   #   ports:
   #     - '3000:3000'
   #   environment:
   #     - NODE_ENV=development
+

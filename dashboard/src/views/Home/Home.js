@@ -178,7 +178,7 @@ class Home extends Component {
                   <div className="col-sm-12 gender-result">
                     <h5 style={{ "color": "dimgray" }}>RESULT </h5>
                     <img src={this.state.imageFile.preview} style={{'max-width':'200px', 'max-height': '150px'}} alt="img.jpg"></img>
-                    <div>
+                    <div style={{'padding-top': '1%'}}>
                       {this.state.imageInfo[0].type} with a {this.state.imageInfo[0].probability} probability.
                     </div>
                   </div>

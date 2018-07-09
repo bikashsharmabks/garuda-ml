@@ -82,9 +82,7 @@
 }
 
 .custom-button-evaluate{
-  background: rgba(255, 255, 255, 0.5);
-  border-radius: 8px;
-  color: black;
+  border-radius: 15px;
   text-align: center;
   text-decoration: none;
   transition: all 0.3s ease-out;
@@ -92,7 +90,19 @@
   width: auto;
   height: 30px;
   margin-left: 5%;
-  border-color: #aaa;
+  background: #0db9e2;
+  border-color: #a7d6e0;
+  color: white;
+  box-shadow: 0 3px #999;
+  outline: none;
+}
+
+.custom-button-evaluate:hover {background-color: #3f85f1;}
+
+.custom-button-evaluate:active {
+  background-color: #3f85f1;
+  box-shadow: 0 3px #666;
+  transform: translateY(4px);
 }
 
 .card-deck {
