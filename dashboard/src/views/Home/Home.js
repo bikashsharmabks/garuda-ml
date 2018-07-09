@@ -1,141 +1,194 @@
-import React, {Component} from 'react';
-// import { Link } from 'react-router'; import superagent from 'superagent';
-// import moment from 'moment';
+import React, { Component } from 'react';
 import superagent from 'superagent';
+import Dropzone from 'react-dropzone';
+import GenderButton from '../../components/GenderButton/GenderButton.js'
+import TextButton from '../../components/TextButton/TextButton.js'
+import ImageButton from '../../components/ImageButton/ImageButton.js'
 
 class Home extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      formName:'gender classification',
-      value: ""
+      formName: 'gender classification',
+      value: "",
+      genderResult: false,
+      genderInfo: [],
+      imageResult: false,
+      imageFile: "",
+      imageInfo: [],
+      textResult : false
     };
     this.handleChange = this.handleChange.bind(this);
-    this.handleGenderClick = this.handleGenderClick.bind(this);
-    this.handleTextClick = this.handleTextClick.bind(this);
-    this.handleImageClick = this.handleImageClick.bind(this);
     this.getGender = this.getGender.bind(this);
     this.getTopic = this.getTopic.bind(this);
   }
 
   handleChange(event) {
-    this.setState({value: event.target.value});
+    this.setState({ value: event.target.value });
   }
 
   getGender(event) {
-    console.log(this.state.value)
-    superagent.get('api/predictions/gender')
-      .send({ name: this.state.value})
+    superagent.post('http://localhost:10001/api/predictions/gender')
+      .send({ name: this.state.value })
       .set('Accept', 'application/json')
       .end((error, response) => {
         if (error) {
           console.log(error)
         } else {
           let res = response.body;
-          console.log(res)
+          let genderInfo = []
+          genderInfo.push({
+            name: res.name,
+            gender: res.gender,
+            probability: res.probability
+          });
+          this.setState({
+            genderResult: true,
+            genderInfo: genderInfo,
+            value: ""
+          });
+          console.log(genderInfo)
         }
       });
   }
 
-  getTopic(event){
-
+  onImageDrop(files) {
+    superagent.post('http://localhost:10002/api/predictions/card-detection')
+      .attach('file', files[0])
+      .end((error, response) => {
+        if (error) {
+          console.log(error)
+        } else {
+          let res = response.body;
+          let imageInfo = []
+          imageInfo.push({
+            type: res.predicted_card_type,
+            probability: res.probability
+          });
+          this.setState({
+            imageFile: files[0],
+            imageResult: true,
+            imageInfo: imageInfo
+          });
+        }
+      });
   }
 
-  handleGenderClick(){
+
+  getTopic(event) {
     this.setState({
-      formName :'gender classification'
+      value: ""
     });
   }
 
-  handleTextClick(){
+  handleGenderClick() {
     this.setState({
-      formName :'text classification'
+      formName: 'gender classification',
+      imageResult: false,
+      genderResult: false,
+      textResult: false
     });
   }
 
-  handleImageClick(){
+  handleTextClick() {
     this.setState({
-      formName :'image classification'
+      formName: 'text classification',
+      imageResult: false,
+      genderResult: false,
+      textResult: false
     });
   }
 
-  componentDidMount() {}
+  handleImageClick() {
+    this.setState({
+      formName: 'image classification',
+      imageResult: false,
+      genderResult: false,
+      textResult: false
+    });
+  }
+
+  componentDidMount() { }
 
   render() {
     return (
-      <div className="conatiner">
+      <div>
         <div className="custom-container">
-          <div
-            style={{
-            "padding-left": 10 + '%',
-            "padding-top": 5 + '%',
-            "color": "white"
-          }}>
-            <h1>P10 Labs</h1>
-          </div>
-
           <div className="container clearfix">
             <div className="row">
-              <div className="col-sm-4">
-                <div className="card custom-card">
-                  <div className="card-body text-center">
-                    <h5 className="card-title card-title-custom">Gender Classification</h5>
-                    <a href="#" type="button" className="btn-floating button-floating-custom">
-                      <i className="fa fa-venus-mars i-custom" aria-hidden="false"></i>
-                    </a>
-                  </div>
-                  <div className="text-center">
-                    <button type="button" className="btn btn-primary btn-primary-custom" onClick={this.handleGenderClick}>Try this API</button>
-                  </div>
-                </div>
-              </div>
-              <div className="col-sm-4">
-                <div className="card custom-card">
-                  <div className="card-body text-center">
-                    <h5 className="card-title card-title-custom">Text Classification</h5>
-                    <a href="#" type="button" className="btn-floating button-floating-custom">
-                      <i className="fa fa-file-text-o i-custom" aria-hidden="false"></i>
-                    </a>
-                  </div>
-                  <div className="text-center">
-                    <button type="button" className="btn btn-primary btn-primary-custom" onClick={this.handleTextClick}>Try this API</button>
-                  </div>
-                </div>
-              </div>
-              <div className="col-sm-4">
-                <div className="card custom-card">
-                  <div className="card-body text-center">
-                    <h5 className="card-title card-title-custom">Image Classification</h5>
-                    <a href="#" type="button" className="btn-floating button-floating-custom">
-                      <i className="fa fa-camera i-custom" aria-hidden="false"></i>
-                    </a>
-                  </div>
-                  <div className="text-center">
-                    <button type="button" className="btn btn-primary btn-primary-custom" onClick={this.handleImageClick}>Try this API</button>
-                  </div>
-                </div>
-              </div>
+              <GenderButton handleGenderClick={this.handleGenderClick.bind(this)} />
+              <TextButton handleTextClick={this.handleTextClick.bind(this)} />
+              <ImageButton handleImageClick={this.handleImageClick.bind(this)} />
             </div>
           </div>
         </div>
-        <div className="container text-center text-container">
+        <div className="container custom-text-container">
           <div className="row">
-            <div className="col-sm-12">
+            <div className="col-sm-12" style={{'padding':0}}>
               {this.state.formName === "gender classification" ?
-              (<form onSubmit={this.getGender}>
-                <h2 style={{"color": "dimgray"}}>Gender Classification </h2>
-                <label></label>
-                <input className="custom-text text-center" type="text" placeholder="Enter a name" value={this.state.value} onChange={this.handleChange}/>
-                <input type="submit" value="Go" />
-              </form>) : ""}
+                (<form onSubmit={this.getGender}>
+                  <h4 style={{ "color": "dimgray" }}>GENDER CLASSIFICATION</h4>
+                  <input className="custom-text" type="text" placeholder="Enter a name" value={this.state.value} onChange={this.handleChange} />
+                  <input className="custom-button-evaluate" type="submit" value="Evaluate" />
+                </form>) : ""}
+
               {this.state.formName === "text classification" ?
-              (<form onSubmit={this.getTopic}>
-                <h2 style={{"color": "dimgray"}}>Gender Classification </h2>
-                <label></label>
-                <input className="custom-text text-center" type="text" placeholder="Enter a name" value={this.state.value} onChange={this.handleChange}/>
-                <input type="submit" value="Go" />
-              </form>) : ""}
+                (<form onSubmit={this.getTopic}>
+                  <h4 style={{ "color": "dimgray" }}>TEXT CLASSIFICATION</h4>
+                  <input className="custom-text" type="text" placeholder="Enter some text" value={this.state.value} onChange={this.handleChange} />
+                  <input className="custom-button-evaluate" type="submit" value="Evaluate" />
+                </form>) : ""}
+
+              {this.state.formName === "image classification" ?
+                (<div>
+                  <h4 style={{ "color": "dimgray" }}>IMAGE CLASSIFICATION</h4>
+                  <Dropzone className="custom-dropzone"
+                    multiple={false}
+                    accept="image/*"
+                    onDrop={this.onImageDrop.bind(this)}>
+                    <p>Drop an image or click to select a file to upload.</p>
+                  </Dropzone>
+                </div>) : ""}
             </div>
+
+            {this.state.genderResult === true ?
+              (<div className="container text-container">
+                <div className="row">
+                  <div className="col-sm-12 gender-result">
+                    <h5 style={{ "color": "dimgray" }}>RESULT </h5>
+                    {this.state.genderInfo[0].gender === 'male' ?
+                      (<div>
+                        {this.state.genderInfo[0].name} is {this.state.genderInfo[0].gender} <i className="fa fa-male custom_icon_mf"  aria-hidden="false"></i>
+                          &nbsp; with a {this.state.genderInfo[0].probability} probability. </div>) :
+                      (<div>
+                        {this.state.genderInfo[0].name} is {this.state.genderInfo[0].gender} <i className="fa fa-female custom_icon_mf" aria-hidden="false"></i>
+                          &nbsp; with a {this.state.genderInfo[0].probability} probability. </div>)
+                      }
+                    <div className="col-sm-12 gender-result">
+                    <h5 style={{ "color": "dimgray" }}>JSON OUTPUT </h5>
+                    {JSON.stringify(this.state.genderInfo[0])}
+                  </div>
+                </div>
+                </div>
+              </div>) : ""}
+
+            {this.state.imageResult === true ?
+              (<div className="container text-container">
+                <div className="row">
+                  <div className="col-sm-12 gender-result">
+                    <h5 style={{ "color": "dimgray" }}>RESULT </h5>
+                    <img src={this.state.imageFile.preview} style={{'max-width':'200px', 'max-height': '150px'}} alt="img.jpg"></img>
+                    <div>
+                      {this.state.imageInfo[0].type} with a {this.state.imageInfo[0].probability} probability.
+                    </div>
+                  </div>
+                  <div className="col-sm-12 gender-result">
+                    <h5 style={{ "color": "dimgray" }}>JSON OUTPUT </h5>
+                    {JSON.stringify(this.state.imageInfo[0])}
+                  </div>
+                </div>
+              </div>) : ""}
+
           </div>
         </div>
       </div>

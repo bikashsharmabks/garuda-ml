@@ -25,30 +25,30 @@ services:
       - ./gender-classification/notebook:/notebooks
       - ./data/gender-classification:/data
 
-  # card-detection:
-  #   container_name: card-detection
-  #   image: dbmobilelife/docker-python-opencv-tesseract
-  #   build: ./card-detection
-  #   hostname: card-detection
-  #   ports:
-  #     - 10002:10002
-  #   environment:
-  #     SERVE_PORT: 10002
-  #   tty: true
-  #   volumes:
-  #     - ./card-detection:/app
-  #     - ./gender-classification/notebook:/notebooks
-  #     - ./data/card-detection:/data  
-
-  dashboard:
-    container_name: dashboard
-    image: node:9.6.1
-    build: ./dashboard
-    hostname: dashboard
-    volumes:
-      - './dashboard/src:/app'
-      - './dashboard/app/node_modules'
+  card-detection:
+    container_name: card-detection
+    image: dbmobilelife/docker-python-opencv-tesseract
+    build: ./card-detection
+    hostname: card-detection
     ports:
-      - '3000:3000'
+      - 10002:10002
     environment:
-      - NODE_ENV=development
+      SERVE_PORT: 10002
+    tty: true
+    volumes:
+      - ./card-detection:/app
+      - ./gender-classification/notebook:/notebooks
+      - ./data/card-detection:/data  
+
+  # dashboard:
+  #   container_name: dashboard
+  #   image: node:9.6.1
+  #   build: ./dashboard
+  #   hostname: dashboard
+  #   volumes:
+  #     - './dashboard/src:/app'
+  #     - './dashboard/app/node_modules'
+  #   ports:
+  #     - '3000:3000'
+  #   environment:
+  #     - NODE_ENV=development
