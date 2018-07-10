@@ -13805,10 +13805,6 @@ base-chart.chart {
 .custom-icon {
   color: #2072d8; }
 
-.custom_icon_mf {
-  font-size: 30px;
-  color: #2072d8; }
-
 .custom-text-container {
   padding: 4%; }
 
@@ -13826,7 +13822,8 @@ base-chart.chart {
   padding-top: 8px;
   padding-bottom: 8px;
   width: 50%;
-  font-family: unset; }
+  font-family: unset;
+  outline: none; }
 
 .button-floating-custom {
   font-size: 40px;
@@ -13834,6 +13831,10 @@ base-chart.chart {
   background: transparent;
   pointer-events: none;
   border: none; }
+
+.custom-description {
+  font-family: arial;
+  color: lightslategray; }
 
 .btn-primary-custom {
   padding: 0;
@@ -13861,20 +13862,20 @@ base-chart.chart {
   text-decoration: none;
   transition: all 0.3s ease-out;
   cursor: pointer;
-  width: auto;
+  width: 100px;
   height: 30px;
   margin-left: 5%;
-  background: #0db9e2;
-  border-color: #a7d6e0;
-  color: white;
-  box-shadow: 0 3px #999;
+  background: #21a8d9;
+  border-color: lightgray;
+  color: whitesmoke;
   outline: none; }
 
-.custom-button-evaluate:hover {
-  background-color: #3f85f1; }
+.custom-json {
+  font-size: 18px;
+  font-display: Comic Sans MS; }
 
 .custom-button-evaluate:active {
-  background-color: #3f85f1;
+  background-color: #a4c3f2;
   box-shadow: 0 3px #666;
   transform: translateY(4px); }
 

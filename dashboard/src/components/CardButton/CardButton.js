@@ -1,15 +1,15 @@
 import React, { Component } from 'react';
 
-class GenderButton extends Component {
+class CardButton extends Component {
 
     render() {
         return (
             <div className="col-sm-4">
                 <div className="card custom-card">
                     <div className="card-body text-center">
-                        <h5 className="card-title custom-card-title">Image Classification</h5>
+                        <h5 className="card-title custom-card-title">Card<br />Detection</h5>
                         <button type="button" className="btn-floating button-floating-custom">
-                            <i className="fa fa-camera custom-icon" aria-hidden="false"></i>
+                            <i className="fa fa-credit-card custom-icon" aria-hidden="false"></i>
                         </button>
                     </div>
                     <div className="text-center">
@@ -21,4 +21,4 @@ class GenderButton extends Component {
     }
 }
 
-export default GenderButton;
+export default CardButton;

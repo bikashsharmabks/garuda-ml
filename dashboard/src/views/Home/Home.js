@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import superagent from 'superagent';
 import Dropzone from 'react-dropzone';
-import GenderButton from '../../components/GenderButton/GenderButton.js'
-import TextButton from '../../components/TextButton/TextButton.js'
-import ImageButton from '../../components/ImageButton/ImageButton.js'
+import GenderButton from '../../components/GenderButton/GenderButton'
+import SentimentButton from '../../components/SentimentButton/SentimentButton'
+import CardButton from '../../components/CardButton/CardButton'
 
 class Home extends Component {
   constructor(props) {
@@ -28,7 +28,7 @@ class Home extends Component {
   }
 
   getGender(event) {
-    superagent.post('http://localhost:10001/api/predictions/gender')
+    superagent.post('http://10.0.1.95:10001/api/predictions/gender')
       .send({ name: this.state.value })
       .set('Accept', 'application/json')
       .end((error, response) => {
@@ -53,7 +53,7 @@ class Home extends Component {
   }
 
   onImageDrop(files) {
-    superagent.post('http://localhost:10002/api/predictions/card-detection')
+    superagent.post('http://10.0.1.95:10002/api/predictions/card-detection')
       .attach('file', files[0])
       .end((error, response) => {
         if (error) {
@@ -117,8 +117,8 @@ class Home extends Component {
           <div className="container clearfix">
             <div className="row">
               <GenderButton handleGenderClick={this.handleGenderClick.bind(this)} />
-              <TextButton handleTextClick={this.handleTextClick.bind(this)} />
-              <ImageButton handleImageClick={this.handleImageClick.bind(this)} />
+              <SentimentButton handleTextClick={this.handleTextClick.bind(this)} />
+              <CardButton handleImageClick={this.handleImageClick.bind(this)} />
             </div>
           </div>
         </div>
@@ -128,20 +128,23 @@ class Home extends Component {
               {this.state.formName === "gender classification" ?
                 (<form onSubmit={this.getGender}>
                   <h4 style={{ "color": "dimgray" }}>GENDER CLASSIFICATION</h4>
+                  <p className="custom-description">Gender classification determines a person's gender, e.g., male or female, based on his or her name.</p>
                   <input className="custom-text" type="text" placeholder="Enter a name" value={this.state.value} onChange={this.handleChange} />
                   <input className="custom-button-evaluate" type="submit" value="Evaluate" />
                 </form>) : ""}
 
               {this.state.formName === "text classification" ?
                 (<form onSubmit={this.getTopic}>
-                  <h4 style={{ "color": "dimgray" }}>TEXT CLASSIFICATION</h4>
+                  <h4 style={{ "color": "dimgray" }}>SENTIMENT ANALYSIS</h4>
+                  <p className="custom-description">Classifies the polarity of a given text, sentence or expressed opinion, as positive, negative, or neutral.</p>
                   <input className="custom-text" type="text" placeholder="Enter some text" value={this.state.value} onChange={this.handleChange} />
                   <input className="custom-button-evaluate" type="submit" value="Evaluate" />
                 </form>) : ""}
 
               {this.state.formName === "image classification" ?
                 (<div>
-                  <h4 style={{ "color": "dimgray" }}>IMAGE CLASSIFICATION</h4>
+                  <h4 style={{ "color": "dimgray" }}>CARD DETECTION</h4>
+                  <p className="custom-description">Detects the presence of any card in image and classifies the type of card, e.g. driving license or financial card (credit/debit).</p>
                   <Dropzone className="custom-dropzone"
                     multiple={false}
                     accept="image/*"
@@ -157,16 +160,16 @@ class Home extends Component {
                   <div className="col-sm-12 gender-result">
                     <h5 style={{ "color": "dimgray" }}>RESULT </h5>
                     {this.state.genderInfo[0].gender === 'male' ?
-                      (<div>
-                        {this.state.genderInfo[0].name} is {this.state.genderInfo[0].gender} <i className="fa fa-male custom_icon_mf"  aria-hidden="false"></i>
-                          &nbsp; with a {this.state.genderInfo[0].probability} probability. </div>) :
-                      (<div>
-                        {this.state.genderInfo[0].name} is {this.state.genderInfo[0].gender} <i className="fa fa-female custom_icon_mf" aria-hidden="false"></i>
-                          &nbsp; with a {this.state.genderInfo[0].probability} probability. </div>)
+                      (<div style={{'font-size': '18px'}}>
+                        {this.state.genderInfo[0].name.charAt(0).toUpperCase()+ this.state.genderInfo[0].name.slice(1)} is {this.state.genderInfo[0].gender} &nbsp; <i className="fa fa-mars fa-2x"  aria-hidden="false"></i>
+                          &nbsp; with a <b>{this.state.genderInfo[0].probability}</b> probability. </div>) :
+                      (<div style={{'font-size': '18px'}}>
+                        {this.state.genderInfo[0].name.charAt(0).toUpperCase()+ this.state.genderInfo[0].name.slice(1)} is {this.state.genderInfo[0].gender} <i className="fa fa-venus fa-2x" aria-hidden="false"></i>
+                          &nbsp; with a <b>{this.state.genderInfo[0].probability}</b> probability. </div>)
                       }
                     <div className="col-sm-12 gender-result">
                     <h5 style={{ "color": "dimgray" }}>JSON OUTPUT </h5>
-                    {JSON.stringify(this.state.genderInfo[0])}
+                    <p className="custom-json">{JSON.stringify(this.state.genderInfo[0])}</p>
                   </div>
                 </div>
                 </div>
@@ -178,13 +181,13 @@ class Home extends Component {
                   <div className="col-sm-12 gender-result">
                     <h5 style={{ "color": "dimgray" }}>RESULT </h5>
                     <img src={this.state.imageFile.preview} style={{'max-width':'200px', 'max-height': '150px'}} alt="img.jpg"></img>
-                    <div style={{'padding-top': '1%'}}>
-                      {this.state.imageInfo[0].type} with a {this.state.imageInfo[0].probability} probability.
+                    <div style={{'padding-top': '1%', 'font-size': '18px'}}>
+                    <b>{this.state.imageInfo[0].type.charAt(0).toUpperCase()+ this.state.imageInfo[0].type.slice(1)}</b> with a <b>{this.state.imageInfo[0].probability}</b> probability.
                     </div>
                   </div>
                   <div className="col-sm-12 gender-result">
                     <h5 style={{ "color": "dimgray" }}>JSON OUTPUT </h5>
-                    {JSON.stringify(this.state.imageInfo[0])}
+                    <p className="custom-json">{JSON.stringify(this.state.imageInfo[0])}</p>
                   </div>
                 </div>
               </div>) : ""}
