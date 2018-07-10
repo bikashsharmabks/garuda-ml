@@ -40,14 +40,28 @@ services:
       - ./gender-classification/notebook:/notebooks
       - ./data/card-detection:/data  
 
-  # dashboard:
-  #   container_name: dashboard
-  #   build: ./dashboard
-  #   volumes:
-  #    - .dashboard/src:/app
-  #    - .dashboard/src/app/node_modules:/app/node_modules
-  #   ports:
-  #     - 3000:3000
-  #   environment:
-  #     - NODE_ENV=development
+  dashboard:
+    container_name: dashboard
+    build: ./dashboard
+    hostname: dashboard
+    volumes:
+     - ./dashboard:/app
+     - /app/node_modules
+    ports:
+      - 3000:3000
+    environment:
+      - NODE_ENV=development
+
+  garuda-proxy:
+    container_name: garuda-proxy
+    image: nginx:alpine
+    hostname: garuda-proxy
+    ports: 
+      - "80:80"
+    # volumes:
+    #    - ./garuda-proxy/nginx.conf:/etc/nginx/conf.d/default.conf
+    #    - ./dashboard/build:/app/www
+    depends_on:
+      - gender-classification
+      - card-detection
 
