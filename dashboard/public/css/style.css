@@ -13874,6 +13874,11 @@ base-chart.chart {
   font-size: 15px;
   font-display: Comic Sans MS; }
 
+.custom-footer {
+  font-family: Trebuchet MS;
+  color: dimgray;
+  justify-content: center; }
+
 .custom-button-evaluate:active {
   background-color: #a4c3f2;
   box-shadow: 0 3px #666;

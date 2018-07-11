@@ -109,7 +109,7 @@ class Home extends Component {
 
   handleTextClick() {
     this.setState({
-      formName: 'text classification',
+      formName: 'sentiment-analysis',
       imageResult: false,
       genderResult: false,
       sentimentResult: false
@@ -156,7 +156,7 @@ class Home extends Component {
                   <input className="custom-button-evaluate" type="submit" value="Evaluate" />
                 </form>) : ""}
 
-              {this.state.formName === "text classification" ?
+              {this.state.formName === "sentiment-analysis" ?
                 (<form onSubmit={this.getSentiment}>
                   <h4>SENTIMENT ANALYSIS</h4>
                   <p className="custom-description">Classifies the polarity of a given text, sentence or expressed opinion, as positive, negative, or neutral.</p>
@@ -190,6 +190,14 @@ class Home extends Component {
                         <i>{this.state.genderInfo[0].name.charAt(0).toUpperCase() + this.state.genderInfo[0].name.slice(1)}</i> is <b>{this.state.genderInfo[0].gender}</b> <i className="fa fa-female fa-2x" aria-hidden="false" style={{ 'color': 'pink' }}></i>
                         &nbsp; with a <b>{this.state.genderInfo[0].probability}</b> probability. </div>)
                     }
+                    <div className="row">
+                      <div className="col-sm-12 text-muted" style={{
+                        'font-size': '13px',
+                        'padding-top': '3px'
+                      }}>
+                        Do you find it accurate enough? &nbsp; <i className="fa fa-thumbs-o-up fa-2x" style={{'color': 'cornflowerblue'}}aria-hidden="true"></i> &nbsp; &nbsp; <i className="fa fa-thumbs-o-down fa-2x" style={{'color':'cornflowerblue'}}aria-hidden="true"></i>
+                      </div>
+                    </div>
                     <div className="col-sm-12 gender-result">
                       <h5>JSON OUTPUT </h5>
                       <p className="custom-json">{JSON.stringify(this.state.genderInfo[0])}</p>
@@ -204,9 +212,26 @@ class Home extends Component {
                   <div className="col-sm-12 gender-result">
                     <h5>RESULT </h5>
                     <img src={this.state.imageFile.preview} style={{ 'max-width': '200px', 'max-height': '150px' }} alt="img.jpg"></img>
-                    <div style={{ 'padding-top': '1%', 'font-size': '15px' }}>
-                      <b>{this.state.imageInfo[0].type.charAt(0).toUpperCase() + this.state.imageInfo[0].type.slice(1)}</b> with a <b>{this.state.imageInfo[0].probability}</b> probability.
-                    </div>
+                    {this.state.imageInfo[0].type === 'driving license' ?
+                      <div style={{ 'padding-top': '1%', 'font-size': '15px' }}>
+                        <b>{this.state.imageInfo[0].type.charAt(0).toUpperCase() + this.state.imageInfo[0].type.slice(1)}</b> <i className="fa fa-credit-card fa-2x" style={{ 'color': 'gray' }} aria-hidden="false"></i> with a <b>{this.state.imageInfo[0].probability}</b> probability.
+                    </div> : ""}
+                    {this.state.imageInfo[0].type === 'financial card' ?
+                      <div style={{ 'padding-top': '1%', 'font-size': '15px' }}>
+                        <b>{this.state.imageInfo[0].type.charAt(0).toUpperCase() + this.state.imageInfo[0].type.slice(1)}</b> <i className="fa fa-credit-card fa-2x" style={{ 'color': 'gray' }} aria-hidden="false"></i> with a <b>{this.state.imageInfo[0].probability}</b> probability.
+                    </div> : ""}
+                    {this.state.imageInfo[0].type === 'text' ?
+                      <div style={{ 'padding-top': '1%', 'font-size': '15px' }}>
+                        <b>{this.state.imageInfo[0].type.charAt(0).toUpperCase() + this.state.imageInfo[0].type.slice(1)}</b> <i className="fa fa-file-text-o fa-2x" style={{ 'color': 'gray' }} aria-hidden="false"></i> with a <b>{this.state.imageInfo[0].probability}</b> probability.
+                    </div> : ""}
+                  </div>
+                  <div className="row">
+                      <div className="col-sm-12 text-muted" style={{
+                        'font-size': '13px',
+                        'padding-top': '3px'
+                      }}>
+                        Do you find it accurate enough? &nbsp; <i className="fa fa-thumbs-o-up fa-2x" style={{'color': 'cornflowerblue'}}aria-hidden="true"></i> &nbsp; &nbsp; <i className="fa fa-thumbs-o-down fa-2x" style={{'color':'cornflowerblue'}}aria-hidden="true"></i>
+                      </div>
                   </div>
                   <div className="col-sm-12 gender-result">
                     <h5>JSON OUTPUT </h5>
@@ -220,17 +245,34 @@ class Home extends Component {
                 <div className="row">
                   <div className="col-sm-12 gender-result">
                     <h5>RESULT </h5>
+                    {this.state.sentimentInfo[0].sentiment === 'positive' ?
                     <div style={{ 'padding-top': '1%', 'font-size': '15px' }}>
-                      The given text <q><i>{this.state.sentimentInfo[0].text}</i></q> is <b>{this.state.sentimentInfo[0].sentiment}</b> with a <b>{this.state.sentimentInfo[0].polarity}</b> polarity.
-                    </div>
+                      The given text <q><i>{this.state.sentimentInfo[0].text}</i></q> is <b>{this.state.sentimentInfo[0].sentiment}</b> <i className="fa fa-smile-o fa-2x" style={{'color': 'forestgreen'}}aria-hidden="false"></i> with a polarity of <b>{this.state.sentimentInfo[0].polarity}</b>.
+                    </div> : ""}
+                    {this.state.sentimentInfo[0].sentiment === 'negative' ?
+                    <div style={{ 'padding-top': '1%', 'font-size': '15px' }}>
+                      The given text <q><i>{this.state.sentimentInfo[0].text}</i></q> is <b>{this.state.sentimentInfo[0].sentiment}</b> <i className="fa fa-frown-o fa-2x" style={{'color': 'deeppink'}}aria-hidden="false"></i> with a polarity of <b>{this.state.sentimentInfo[0].polarity}</b>.
+                    </div> : ""}
+                    {this.state.sentimentInfo[0].sentiment === 'neutral' ?
+                    <div style={{ 'padding-top': '1%', 'font-size': '15px' }}>
+                      The given text <q><i>{this.state.sentimentInfo[0].text}</i></q> is <b>{this.state.sentimentInfo[0].sentiment}</b> <i className="fa fa-meh-o fa-2x" style={{'color': 'orange'}}aria-hidden="false"></i> with a polarity of <b>{this.state.sentimentInfo[0].polarity}</b>.
+                    </div> : ""}
                   </div>
+                  <div className="row">
+                      <div className="col-sm-12 text-muted" style={{
+                        'font-size': '13px',
+                        'padding-top': '3px'
+                      }}>
+                        Do you find it accurate enough? &nbsp; <i className="fa fa-thumbs-o-up fa-2x" style={{'color': 'cornflowerblue'}}aria-hidden="true"></i> &nbsp; &nbsp; <i className="fa fa-thumbs-o-down fa-2x" style={{'color':'cornflowerblue'}}aria-hidden="true"></i>
+                      </div>
+                    </div>
                   <div className="col-sm-12 gender-result">
                     <h5>JSON OUTPUT </h5>
                     <p className="custom-json">{JSON.stringify(this.state.sentimentInfo[0])}</p>
                   </div>
                 </div>
               </div>) : ""}
-
+              
           </div>
         </div>
       </div>

@@ -23,7 +23,7 @@ def predict_sentiment():
 		text = req_body["text"];
 		result = sentiment.predict_text_sentiment(text)
 		response = Response(response=json.dumps({
-        	"polarity": result["polarity"],
+        	"polarity": str(round(result["polarity"]*100,2)),
         	"subjectivity":result["subjectivity"],
         	"sentiment": result["sentiment"]
         }),
