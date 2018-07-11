@@ -1,5 +1,8 @@
 import tensorflow as tf
 
+graph = tf.get_default_graph()
+
+
 WORD_DICT = 'abcdefghijklmnopqrstuvwxyz';
 char_to_ix = { ch:i for i,ch in enumerate(WORD_DICT)}
 CLASSES = ['female','male']
@@ -19,11 +22,11 @@ class Prediction:
                     name_vec.append(char_to_ix[s.lower()])
             else:
                  name_vec.append(0)
-
-        name_vec = tf.keras.preprocessing.sequence.pad_sequences([name_vec], maxlen=max_feature_length)    
-        proba = gender_pred_model.predict_proba(name_vec)
-        predicted_label = gender_pred_model.predict_classes(name_vec)
-        return (CLASSES[predicted_label[0][0]] , proba[0][0])
+        with graph.as_default():
+            name_vec = tf.keras.preprocessing.sequence.pad_sequences([name_vec], maxlen=max_feature_length)    
+            proba = gender_pred_model.predict_proba(name_vec)
+            predicted_label = gender_pred_model.predict_classes(name_vec)
+            return (CLASSES[predicted_label[0][0]] , proba[0][0])
 
 
 # pred = Prediction()
