@@ -6,8 +6,7 @@ import os
 import service
 
 
-pred = service.Prediction();
-print(pred.predict_gender("name"))
+pred = service.Prediction()
 #create instance of flask app
 app = Flask(__name__)
 
@@ -34,5 +33,5 @@ def predict_gender():
 
 
 if __name__ == '__main__':
-	app.run(host='0.0.0.0', port=SERVE_PORT,debug=True)
+	app.run(host='0.0.0.0', port=SERVE_PORT,debug=False)
 	print("gender-classification serve at :%s" %(SERVE_PORT))

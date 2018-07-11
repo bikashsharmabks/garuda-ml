@@ -28,7 +28,7 @@ class Home extends Component {
   }
 
   getGender(event) {
-    superagent.post('http://10.0.1.95:10001/api/predictions/gender')
+    superagent.post('api/gender-classification/predict')
       .send({ name: this.state.value })
       .set('Accept', 'application/json')
       .end((error, response) => {
@@ -52,7 +52,7 @@ class Home extends Component {
   }
 
   onImageDrop(files) {
-    superagent.post('http://10.0.1.95:10002/api/predictions/card-detection')
+    superagent.post('api/card-detection/predict')
     .attach('file', files[0])
       .end((error, response) => {
         if (error) {
@@ -75,7 +75,7 @@ class Home extends Component {
 
 
   getSentiment(event) {
-    superagent.post('http://10.0.1.95:10003/api/predictions/sentiment')
+    superagent.post('api/sentiment-analysis/predict')
     .send({ text: this.state.value })
       .end((error, response) => {
         if (error) {
@@ -103,7 +103,7 @@ class Home extends Component {
       formName: 'gender classification',
       imageResult: false,
       genderResult: false,
-      textResult: false
+      sentimentResult: false
     });
   }
 
@@ -112,7 +112,7 @@ class Home extends Component {
       formName: 'text classification',
       imageResult: false,
       genderResult: false,
-      textResult: false
+      sentimentResult: false
     });
   }
 
@@ -121,7 +121,7 @@ class Home extends Component {
       formName: 'image classification',
       imageResult: false,
       genderResult: false,
-      textResult: false
+      sentimentResult: false
     });
   }
 
@@ -130,12 +130,12 @@ class Home extends Component {
   render() {
     return (
       <div>
-          <div className= "row mt-2 banner-text">
-            <div className="col-sm-8 col-lg-6">
-              <div className="h3">Easy to integrate AI services</div>
-              </div>
+        <div className="row mt-2 banner-text">
+          <div className="col-sm-8 col-lg-6">
+            <div className="h3">Easy to integrate AI services</div>
           </div>
-        
+        </div>
+
         <div className="custom-container">
           <div className="container clearfix">
             <div className="row">
@@ -147,7 +147,7 @@ class Home extends Component {
         </div>
         <div className="container custom-text-container">
           <div className="row">
-            <div className="col-sm-12" style={{'padding':0}}>
+            <div className="col-sm-12" style={{ 'padding': 0 }}>
               {this.state.formName === "gender classification" ?
                 (<form onSubmit={this.getGender}>
                   <h4>GENDER CLASSIFICATION</h4>
@@ -183,18 +183,18 @@ class Home extends Component {
                   <div className="col-sm-12 gender-result">
                     <h5>RESULT </h5>
                     {this.state.genderInfo[0].gender === 'male' ?
-                      (<div style={{'font-size': '15px'}}>
-                        <i>{this.state.genderInfo[0].name.charAt(0).toUpperCase()+ this.state.genderInfo[0].name.slice(1)}</i> is <b>{this.state.genderInfo[0].gender}</b> &nbsp; <i className="fa fa-male fa-2x"  aria-hidden="false" style={{'color': '#2072d8'}}></i>
-                          &nbsp; with a <b>{this.state.genderInfo[0].probability}</b> probability. </div>) :
-                      (<div style={{'font-size': '15px'}}>
-                        <i>{this.state.genderInfo[0].name.charAt(0).toUpperCase()+ this.state.genderInfo[0].name.slice(1)}</i> is <b>{this.state.genderInfo[0].gender}</b> <i className="fa fa-female fa-2x" aria-hidden="false" style={{'color': 'pink'}}></i>
-                          &nbsp; with a <b>{this.state.genderInfo[0].probability}</b> probability. </div>)
-                      }
+                      (<div style={{ 'font-size': '15px' }}>
+                        <i>{this.state.genderInfo[0].name.charAt(0).toUpperCase() + this.state.genderInfo[0].name.slice(1)}</i> is <b>{this.state.genderInfo[0].gender}</b> &nbsp; <i className="fa fa-male fa-2x" aria-hidden="false" style={{ 'color': '#2072d8' }}></i>
+                        &nbsp; with a <b>{this.state.genderInfo[0].probability}</b> probability. </div>) :
+                      (<div style={{ 'font-size': '15px' }}>
+                        <i>{this.state.genderInfo[0].name.charAt(0).toUpperCase() + this.state.genderInfo[0].name.slice(1)}</i> is <b>{this.state.genderInfo[0].gender}</b> <i className="fa fa-female fa-2x" aria-hidden="false" style={{ 'color': 'pink' }}></i>
+                        &nbsp; with a <b>{this.state.genderInfo[0].probability}</b> probability. </div>)
+                    }
                     <div className="col-sm-12 gender-result">
-                    <h5>JSON OUTPUT </h5>
-                    <p className="custom-json">{JSON.stringify(this.state.genderInfo[0])}</p>
+                      <h5>JSON OUTPUT </h5>
+                      <p className="custom-json">{JSON.stringify(this.state.genderInfo[0])}</p>
+                    </div>
                   </div>
-                </div>
                 </div>
               </div>) : ""}
 
@@ -203,9 +203,9 @@ class Home extends Component {
                 <div className="row">
                   <div className="col-sm-12 gender-result">
                     <h5>RESULT </h5>
-                    <img src={this.state.imageFile.preview} style={{'max-width':'200px', 'max-height': '150px'}} alt="img.jpg"></img>
-                    <div style={{'padding-top': '1%', 'font-size': '15px'}}>
-                    <b>{this.state.imageInfo[0].type.charAt(0).toUpperCase()+ this.state.imageInfo[0].type.slice(1)}</b> with a <b>{this.state.imageInfo[0].probability}</b> probability.
+                    <img src={this.state.imageFile.preview} style={{ 'max-width': '200px', 'max-height': '150px' }} alt="img.jpg"></img>
+                    <div style={{ 'padding-top': '1%', 'font-size': '15px' }}>
+                      <b>{this.state.imageInfo[0].type.charAt(0).toUpperCase() + this.state.imageInfo[0].type.slice(1)}</b> with a <b>{this.state.imageInfo[0].probability}</b> probability.
                     </div>
                   </div>
                   <div className="col-sm-12 gender-result">
@@ -215,12 +215,12 @@ class Home extends Component {
                 </div>
               </div>) : ""}
 
-              {this.state.sentimentResult === true ?
+            {this.state.sentimentResult === true ?
               (<div className="container text-container">
                 <div className="row">
                   <div className="col-sm-12 gender-result">
                     <h5>RESULT </h5>
-                    <div style={{'padding-top': '1%', 'font-size': '15px'}}>
+                    <div style={{ 'padding-top': '1%', 'font-size': '15px' }}>
                       The given text <q><i>{this.state.sentimentInfo[0].text}</i></q> is <b>{this.state.sentimentInfo[0].sentiment}</b> with a <b>{this.state.sentimentInfo[0].polarity}</b> polarity.
                     </div>
                   </div>

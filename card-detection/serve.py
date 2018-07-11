@@ -49,7 +49,7 @@ def card_detection():
     return response
 
 if __name__ == '__main__':
-	app.run(host='0.0.0.0', port=SERVE_PORT,debug=True)
+	app.run(host='0.0.0.0', port=SERVE_PORT,debug=False)
 	print("card-detection serve at :%s" %(SERVE_PORT))
 
 
