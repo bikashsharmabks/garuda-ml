@@ -26,6 +26,6 @@ class Prediction:
         return (CLASSES[predicted_label[0][0]] , proba[0][0])
 
 
-# pred = Prediction();
+# pred = Prediction()
 
 # print(pred.predict_gender("Aashish"))    

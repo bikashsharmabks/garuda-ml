@@ -13906,9 +13906,12 @@ base-chart.chart {
   color: #2a2c36; }
 
 .navbar-brand-custom {
-  border-bottom: 0 !important;
-  padding: 0 !important;
-  background-color: white !important; }
+  width: 220px !important;
+  height: 50px !important; }
+
+.banner-text {
+  padding: 1% !important;
+  margin: 0% !important; }
 
 .email-app {
   display: flex;

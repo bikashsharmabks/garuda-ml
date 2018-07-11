@@ -1,0 +1,1 @@
+from service.prediction import Prediction
