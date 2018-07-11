@@ -27,5 +27,4 @@ class Prediction:
 
 
 # pred = Prediction()
-
 # print(pred.predict_gender("Aashish"))    

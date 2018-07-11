@@ -9,7 +9,9 @@ graph = tf.get_default_graph()
 CLASSES = ['driving license', 'financial card', 'text']
 CARD_DETECTION_MODEL_PATH = "/data/models/card_detection_model_v1"
 
-card_detection_model = load_model(CARD_DETECTION_MODEL_PATH)   
+card_detection_model = load_model(CARD_DETECTION_MODEL_PATH)  
+card_detection_model.compile(loss = "categorical_crossentropy", optimizer = optimizers.SGD(lr=0.0001, momentum=0.9), metrics=["accuracy"])
+
 
    
 class Prediction:
