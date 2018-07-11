@@ -3,6 +3,8 @@ from keras.models import load_model
 from keras.preprocessing.image import load_img, img_to_array
 import numpy as numpy
 import tensorflow as tf
+from keras import optimizers 
+
 
 graph = tf.get_default_graph()
 
