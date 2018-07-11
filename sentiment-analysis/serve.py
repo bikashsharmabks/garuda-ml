@@ -14,7 +14,7 @@ app = Flask(__name__)
 SERVE_PORT = os.environ['SERVE_PORT']
 
 # POST / 
-@app.route("/api/predictions/sentiment", methods = ['POST'])
+@app.route("/api/predict", methods = ['POST'])
 def predict_sentiment():
 	req_body = request.get_json()
 	if(not bool(req_body["text"])):
@@ -34,5 +34,5 @@ def predict_sentiment():
 
 
 if __name__ == '__main__':
-	app.run(host='0.0.0.0', port=SERVE_PORT,debug=True)
+	app.run(host='0.0.0.0', port=SERVE_PORT,debug=False)
 	print("sentiment-analysis serve at :%s" %(SERVE_PORT))

@@ -22,7 +22,7 @@ def allowed_file(filename):
            filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 
-@app.route("/api/predictions/card-detection", methods = ['POST'])
+@app.route("/api/predict", methods = ['POST'])
 def card_detection():
     if 'file' not in request.files:
         response = Response(response="No file found in request",status=400)
@@ -49,7 +49,7 @@ def card_detection():
     return response
 
 if __name__ == '__main__':
-	app.run(host='0.0.0.0', port=SERVE_PORT,debug=True)
+	app.run(host='0.0.0.0', port=SERVE_PORT,debug=False)
 	print("card-detection serve at :%s" %(SERVE_PORT))
 
 

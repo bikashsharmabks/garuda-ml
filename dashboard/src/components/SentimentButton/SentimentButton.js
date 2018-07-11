@@ -4,7 +4,7 @@ class SentimentButton extends Component {
 
   render() {
     return (
-        <div className="col-sm-4">
+        <div className="col-sm-4 col-12" style={{'height':'300px'}}>
         <div className="card custom-card">
           <div className="card-body text-center">
             <h5 className="card-title custom-card-title">Sentiment Analysis</h5>
