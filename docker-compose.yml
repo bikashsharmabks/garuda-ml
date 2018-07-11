@@ -53,17 +53,17 @@ services:
     volumes:
       - ./sentiment-analysis:/app
 
-  dashboard:
-    container_name: dashboard
-    build: ./dashboard
-    hostname: dashboard
-    volumes:
-     - ./dashboard:/app
-     - /app/node_modules
-    ports:
-      - 3000:3000
-    environment:
-      - NODE_ENV=development
+  # dashboard:
+  #   container_name: dashboard
+  #   build: ./dashboard
+  #   hostname: dashboard
+  #   volumes:
+  #    - ./dashboard:/app
+  #    - /app/node_modules
+  #   ports:
+  #     - 3000:3000
+  #   environment:
+  #     - NODE_ENV=development
 
   garuda-proxy:
     container_name: garuda-proxy
