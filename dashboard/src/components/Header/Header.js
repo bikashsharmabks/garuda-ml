@@ -22,7 +22,11 @@ class Header extends Component {
       <header className="app-header navbar">
         <a className="navbar-brand navbar-brand-custom" href="#"></a>
         <div className="nav navbar nav-item hidden-md-down">
-          <div className="h4 mt-auto">Labs AI API</div>
+          <div className="h4 mt-auto">Labs AI API<sup style={{
+            'color': 'darkgray',
+            'font-size': '12px',
+            'vertical-align': 'super'
+          }}>Beta</sup></div>
         </div>
         <div className="nav navbar-nav hidden-md-down">
         </div>

@@ -183,11 +183,11 @@ class Home extends Component {
                   <div className="col-sm-12 gender-result">
                     <h5>RESULT </h5>
                     {this.state.genderInfo[0].gender === 'male' ?
-                      (<div style={{'font-size': '18px'}}>
-                        <i>{this.state.genderInfo[0].name.charAt(0).toUpperCase()+ this.state.genderInfo[0].name.slice(1)}</i> is {this.state.genderInfo[0].gender} &nbsp; <i className="fa fa-male fa-2x"  aria-hidden="false" style={{'color': '#2072d8'}}></i>
+                      (<div style={{'font-size': '15px'}}>
+                        <i>{this.state.genderInfo[0].name.charAt(0).toUpperCase()+ this.state.genderInfo[0].name.slice(1)}</i> is <b>{this.state.genderInfo[0].gender}</b> &nbsp; <i className="fa fa-male fa-2x"  aria-hidden="false" style={{'color': '#2072d8'}}></i>
                           &nbsp; with a <b>{this.state.genderInfo[0].probability}</b> probability. </div>) :
-                      (<div style={{'font-size': '18px'}}>
-                        <i>{this.state.genderInfo[0].name.charAt(0).toUpperCase()+ this.state.genderInfo[0].name.slice(1)}</i> is {this.state.genderInfo[0].gender} <i className="fa fa-female fa-2x" aria-hidden="false" style={{'color': 'pink'}}></i>
+                      (<div style={{'font-size': '15px'}}>
+                        <i>{this.state.genderInfo[0].name.charAt(0).toUpperCase()+ this.state.genderInfo[0].name.slice(1)}</i> is <b>{this.state.genderInfo[0].gender}</b> <i className="fa fa-female fa-2x" aria-hidden="false" style={{'color': 'pink'}}></i>
                           &nbsp; with a <b>{this.state.genderInfo[0].probability}</b> probability. </div>)
                       }
                     <div className="col-sm-12 gender-result">
@@ -204,7 +204,7 @@ class Home extends Component {
                   <div className="col-sm-12 gender-result">
                     <h5>RESULT </h5>
                     <img src={this.state.imageFile.preview} style={{'max-width':'200px', 'max-height': '150px'}} alt="img.jpg"></img>
-                    <div style={{'padding-top': '1%', 'font-size': '18px'}}>
+                    <div style={{'padding-top': '1%', 'font-size': '15px'}}>
                     <b>{this.state.imageInfo[0].type.charAt(0).toUpperCase()+ this.state.imageInfo[0].type.slice(1)}</b> with a <b>{this.state.imageInfo[0].probability}</b> probability.
                     </div>
                   </div>
@@ -220,7 +220,7 @@ class Home extends Component {
                 <div className="row">
                   <div className="col-sm-12 gender-result">
                     <h5>RESULT </h5>
-                    <div style={{'padding-top': '1%', 'font-size': '18px'}}>
+                    <div style={{'padding-top': '1%', 'font-size': '15px'}}>
                       The given text <q><i>{this.state.sentimentInfo[0].text}</i></q> is <b>{this.state.sentimentInfo[0].sentiment}</b> with a <b>{this.state.sentimentInfo[0].polarity}</b> polarity.
                     </div>
                   </div>
