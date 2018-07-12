@@ -29,7 +29,7 @@ def predict_gender():
 		response = Response(response=json.dumps({
         	"name": name,
         	"gender":result[0],
-        	"probability": result[1];
+        	"probability": result[1]
         }),
         status=200,
         mimetype='application/json'
