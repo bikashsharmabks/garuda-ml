@@ -20,7 +20,8 @@ def predict_gender():
 		response = Response(response="name not found.",status=400)
 	else:
 		name = req_body["name"];
-		result = pred.predict_gender(name);
+		res = pred.predict_gender(name);
+		result = list(res);
 		if(result[0] == 'female'):
 			result[1] = 100 - result[1];
 		response = Response(response=json.dumps({
