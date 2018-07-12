@@ -23,7 +23,7 @@ def predict_gender():
 		res = pred.predict_gender(name);
 		result = list(res);
 		if(result[0] == 'female'):
-			result[1] = 100 - result[1];
+			result[1] = 100.0 - result[1];
 		response = Response(response=json.dumps({
         	"name": name,
         	"gender":result[0],
