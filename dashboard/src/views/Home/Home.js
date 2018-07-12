@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
 import superagent from 'superagent';
 import Dropzone from 'react-dropzone';
-import GenderButton from '../../components/GenderButton/GenderButton'
-import SentimentButton from '../../components/SentimentButton/SentimentButton'
-import CardButton from '../../components/CardButton/CardButton'
+import GenderButton from '../../components/GenderButton/GenderButton';
+import SentimentButton from '../../components/SentimentButton/SentimentButton';
+import CardButton from '../../components/CardButton/CardButton';
+import ReactGA from 'react-ga';
+
 
 class Home extends Component {
   constructor(props) {
@@ -21,13 +23,23 @@ class Home extends Component {
     this.handleChange = this.handleChange.bind(this);
     this.getGender = this.getGender.bind(this);
     this.getSentiment = this.getSentiment.bind(this);
+    this.trackUsage = this.trackUsage.bind(this);
   }
 
   handleChange(event) {
     this.setState({ value: event.target.value });
   }
 
+  trackUsage(category, action) {
+    ReactGA.event({
+      category: category,
+      action: action,
+    });
+  }
+  
+
   getGender(event) {
+    this.trackUsage('Gender Classification', 'gender click');
     superagent.post('api/gender-classification/predict')
       .send({ name: this.state.value })
       .set('Accept', 'application/json')
@@ -52,6 +64,7 @@ class Home extends Component {
   }
 
   onImageDrop(files) {
+    this.trackUsage('Card detection', 'card click');
     superagent.post('api/card-detection/predict')
     .attach('file', files[0])
       .end((error, response) => {
@@ -75,6 +88,7 @@ class Home extends Component {
 
 
   getSentiment(event) {
+    this.trackUsage('Sentiment Analysis', 'sentiment click');
     superagent.post('api/sentiment-analysis/predict')
     .send({ text: this.state.value })
       .end((error, response) => {
@@ -193,9 +207,9 @@ class Home extends Component {
                     <div className="row">
                       <div className="col-sm-12 text-muted" style={{
                         'font-size': '13px',
-                        'padding-top': '3px'
+                        'padding-top': '10px'
                       }}>
-                        Do you find it accurate enough? &nbsp; <i className="fa fa-thumbs-o-up fa-2x" style={{'color': 'cornflowerblue'}}aria-hidden="true"></i> &nbsp; &nbsp; <i className="fa fa-thumbs-o-down fa-2x" style={{'color':'cornflowerblue'}}aria-hidden="true"></i>
+                        Do you find it accurate enough? &nbsp; <i className="fa fa-thumbs-o-up fa-2x custom-thumb" aria-hidden="true"></i> &nbsp; &nbsp; <i className="fa fa-thumbs-o-down fa-2x custom-thumb"aria-hidden="true"></i>
                       </div>
                     </div>
                     <div className="col-sm-12 gender-result">
@@ -230,7 +244,7 @@ class Home extends Component {
                         'font-size': '13px',
                         'padding-top': '3px'
                       }}>
-                        Do you find it accurate enough? &nbsp; <i className="fa fa-thumbs-o-up fa-2x" style={{'color': 'cornflowerblue'}}aria-hidden="true"></i> &nbsp; &nbsp; <i className="fa fa-thumbs-o-down fa-2x" style={{'color':'cornflowerblue'}}aria-hidden="true"></i>
+                        Do you find it accurate enough? &nbsp; <i className="fa fa-thumbs-o-up fa-2x custom-thumb" aria-hidden="true"></i> &nbsp; &nbsp; <i className="fa fa-thumbs-o-down fa-2x custom-thumb" aria-hidden="true"></i>
                       </div>
                   </div>
                   <div className="col-sm-12 gender-result">
@@ -263,7 +277,7 @@ class Home extends Component {
                         'font-size': '13px',
                         'padding-top': '3px'
                       }}>
-                        Do you find it accurate enough? &nbsp; <i className="fa fa-thumbs-o-up fa-2x" style={{'color': 'cornflowerblue'}}aria-hidden="true"></i> &nbsp; &nbsp; <i className="fa fa-thumbs-o-down fa-2x" style={{'color':'cornflowerblue'}}aria-hidden="true"></i>
+                        Do you find it accurate enough? &nbsp; <i className="fa fa-thumbs-o-up fa-2x custom-thumb" aria-hidden="true"></i> &nbsp; &nbsp; <i className="fa fa-thumbs-o-down fa-2x" style={{'color':'cornflowerblue'}}aria-hidden="true"></i>
                       </div>
                     </div>
                   <div className="col-sm-12 gender-result">

@@ -22,6 +22,7 @@ class Prediction:
                     name_vec.append(char_to_ix[s.lower()])
             else:
                  name_vec.append(0)
+                 
         with graph.as_default():
             name_vec = tf.keras.preprocessing.sequence.pad_sequences([name_vec], maxlen=max_feature_length)    
             proba = gender_pred_model.predict_proba(name_vec)
