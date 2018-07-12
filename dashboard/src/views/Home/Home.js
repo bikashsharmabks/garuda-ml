@@ -112,7 +112,8 @@ class Home extends Component {
       formName: 'gender classification',
       imageResult: false,
       genderResult: false,
-      sentimentResult: false
+      sentimentResult: false,
+      activeThumb: ""
     });
   }
 
@@ -121,7 +122,8 @@ class Home extends Component {
       formName: 'sentiment-analysis',
       imageResult: false,
       genderResult: false,
-      sentimentResult: false
+      sentimentResult: false,
+      activeThumb: ""
     });
   }
 
@@ -130,7 +132,8 @@ class Home extends Component {
       formName: 'image classification',
       imageResult: false,
       genderResult: false,
-      sentimentResult: false
+      sentimentResult: false,
+      activeThumb: ""
     });
   }
 
@@ -154,15 +157,16 @@ class Home extends Component {
         <div className="custom-container">
           <div className="container clearfix">
             <div className="row">
-              <GenderButton handleGenderClick={this.handleGenderClick.bind(this)} />
-              <SentimentButton handleTextClick={this.handleTextClick.bind(this)} />
+              <GenderButton handleGenderClick={this.handleGenderClick.bind(this)} />      
               <CardButton handleImageClick={this.handleImageClick.bind(this)} />
+              <SentimentButton handleTextClick={this.handleTextClick.bind(this)} />   
             </div>
           </div>
         </div>
-        <div className="container custom-text-container">
+
+        <div className="custom-text-container">
           <div className="row">
-            <div className="col-sm-12" style={{ 'padding': 0 }}>
+            <div className="col-sm-12 col-12">
               {this.state.formName === "gender classification" ?
                 (<form onSubmit={this.getGender.bind(this)}>
                   <h4>GENDER CLASSIFICATION</h4>
@@ -190,25 +194,23 @@ class Home extends Component {
                     <p>Drop an image or click to select a file to upload.</p>
                   </Dropzone>
                 </div>) : ""}
-            </div>
-
-            {this.state.genderResult === true ?
-              (<div className="container text-container">
-                <div className="row">
-                  <div className="col-sm-12 gender-result">
+            </div>              
+          </div>
+          {this.state.genderResult === true ?
+              (<div className="row">
+                  <div className="col-sm-12 col-12 result">
                     <h5>RESULT </h5>
                     {this.state.genderInfo[0].gender === 'male' ?
-                      (<div style={{ 'font-size': '15px' }}>
+                      (<p style={{ 'fontSize': '15px' }}>
                         <i>{this.state.genderInfo[0].name.charAt(0).toUpperCase() + this.state.genderInfo[0].name.slice(1)}</i> is <b>{this.state.genderInfo[0].gender}</b> &nbsp; <i className="fa fa-male fa-2x" aria-hidden="false" style={{ 'color': '#2072d8' }}></i>
-                        &nbsp; with a <b>{this.state.genderInfo[0].probability}</b> probability. </div>) :
-                      (<div style={{ 'font-size': '15px' }}>
+                        &nbsp; with a <b>{this.state.genderInfo[0].probability}</b> probability. </p>) :
+                      (<p style={{ 'fontSize': '15px' }}>
                         <i>{this.state.genderInfo[0].name.charAt(0).toUpperCase() + this.state.genderInfo[0].name.slice(1)}</i> is <b>{this.state.genderInfo[0].gender}</b> <i className="fa fa-female fa-2x" aria-hidden="false" style={{ 'color': 'pink' }}></i>
-                        &nbsp; with a <b>{this.state.genderInfo[0].probability}</b> probability. </div>)
+                        &nbsp; with a <b>{this.state.genderInfo[0].probability}</b> probability. </p>)
                     }
-                    <div className="row">
-                      <div className="col-sm-12 text-muted" style={{
-                        'font-size': '13px',
-                        'padding-top': '10px'
+                      <p className="text-muted" style={{
+                        'fontSize': '13px',
+                        'paddingTop': '10px'
                       }}>
                         Do you find it accurate enough? &nbsp;
                         <a
@@ -217,47 +219,42 @@ class Home extends Component {
 
                         ><i className="fa fa-thumbs-o-up fa-2x custom-thumb" aria-hidden="true"> </i>
                         </a> &nbsp; &nbsp;
-  
                       <a
                           onClick={this.handleToggle.bind(this, "thumbsDown")}
                           style={{ color: (this.state.activeThumb === 'thumbsDown' ? "cornflowerblue" : "gray") }}
                         >
                           <i className="fa fa-thumbs-o-down fa-2x custom-thumb" aria-hidden="true"></i>
                         </a>
-                      </div>
-                    </div>
+                    </p>
        
-                    <div className="col-sm-12 gender-result">
+                    <div className="result">
                       <h5>JSON OUTPUT </h5>
                       <p className="custom-json">{JSON.stringify(this.state.genderInfo[0])}</p>
                     </div>
                   </div>
-                </div>
-              </div>) : ""}
-
+                  </div>) : ""}
+                      
             {this.state.imageResult === true ?
-              (<div className="container text-container">
-                <div className="row">
-                  <div className="col-sm-12 gender-result">
+              (<div className="row">
+                  <div className="col-sm-12 result">
                     <h5>RESULT </h5>
                     <img src={this.state.imageFile.preview} style={{ 'max-width': '200px', 'max-height': '150px' }} alt="img.jpg"></img>
                     {this.state.imageInfo[0].type === 'driving license' ?
-                      <div style={{ 'padding-top': '1%', 'font-size': '15px' }}>
+                      <p style={{ 'paddingTop': '1%', 'fontSize': '15px' }}>
                         <b>{this.state.imageInfo[0].type.charAt(0).toUpperCase() + this.state.imageInfo[0].type.slice(1)}</b> <i className="fa fa-credit-card fa-2x" style={{ 'color': 'gray' }} aria-hidden="false"></i> with a <b>{this.state.imageInfo[0].probability}</b> probability.
-                    </div> : ""}
+                    </p> : ""}
                     {this.state.imageInfo[0].type === 'financial card' ?
-                      <div style={{ 'padding-top': '1%', 'font-size': '15px' }}>
+                      <p style={{ 'paddingTop': '1%', 'fontSize': '15px' }}>
                         <b>{this.state.imageInfo[0].type.charAt(0).toUpperCase() + this.state.imageInfo[0].type.slice(1)}</b> <i className="fa fa-credit-card fa-2x" style={{ 'color': 'gray' }} aria-hidden="false"></i> with a <b>{this.state.imageInfo[0].probability}</b> probability.
-                    </div> : ""}
+                    </p> : ""}
                     {this.state.imageInfo[0].type === 'text' ?
-                      <div style={{ 'padding-top': '1%', 'font-size': '15px' }}>
+                      <p style={{ 'paddingTop': '1%', 'fontSize': '15px' }}>
                         <b>{this.state.imageInfo[0].type.charAt(0).toUpperCase() + this.state.imageInfo[0].type.slice(1)}</b> <i className="fa fa-file-text-o fa-2x" style={{ 'color': 'gray' }} aria-hidden="false"></i> with a <b>{this.state.imageInfo[0].probability}</b> probability.
-                    </div> : ""}
-                  </div>
-                  <div className="row">
-                      <div className="col-sm-12 text-muted" style={{
-                        'font-size': '13px',
-                        'padding-top': '10px'
+                    </p> : ""}
+                  
+                    <p className="text-muted" style={{
+                        'fontSize': '13px',
+                        'paddingTop': '10px'
                       }}>
                         Do you find it accurate enough? &nbsp;
                         <a
@@ -273,9 +270,8 @@ class Home extends Component {
                         >
                           <i className="fa fa-thumbs-o-down fa-2x custom-thumb" aria-hidden="true"></i>
                         </a>
-                      </div>
-                  </div>
-                  <div className="col-sm-12 gender-result">
+                  </p>
+                  <div className="result">
                     <h5>JSON OUTPUT </h5>
                     <p className="custom-json">{JSON.stringify(this.state.imageInfo[0])}</p>
                   </div>
@@ -283,27 +279,26 @@ class Home extends Component {
               </div>) : ""}
 
             {this.state.sentimentResult === true ?
-              (<div className="container text-container">
+              (
                 <div className="row">
-                  <div className="col-sm-12 gender-result">
+                  <div className="col-sm-12 result">
                     <h5>RESULT </h5>
                     {this.state.sentimentInfo[0].sentiment === 'positive' ?
-                    <div style={{ 'padding-top': '1%', 'font-size': '15px' }}>
+                    <p style={{ 'paddingTop': '1%', 'fontSize': '15px' }}>
                       The given text <q><i>{this.state.sentimentInfo[0].text}</i></q> is <b>{this.state.sentimentInfo[0].sentiment}</b> <i className="fa fa-smile-o fa-2x" style={{'color': 'forestgreen'}}aria-hidden="false"></i> with a polarity of <b>{this.state.sentimentInfo[0].polarity}</b>.
-                    </div> : ""}
+                    </p> : ""}
                     {this.state.sentimentInfo[0].sentiment === 'negative' ?
-                    <div style={{ 'padding-top': '1%', 'font-size': '15px' }}>
+                    <p style={{ 'paddingTop': '1%', 'fontSize': '15px' }}>
                       The given text <q><i>{this.state.sentimentInfo[0].text}</i></q> is <b>{this.state.sentimentInfo[0].sentiment}</b> <i className="fa fa-frown-o fa-2x" style={{'color': 'deeppink'}}aria-hidden="false"></i> with a polarity of <b>{this.state.sentimentInfo[0].polarity}</b>.
-                    </div> : ""}
+                    </p> : ""}
                     {this.state.sentimentInfo[0].sentiment === 'neutral' ?
-                    <div style={{ 'padding-top': '1%', 'font-size': '15px' }}>
+                    <p style={{ 'paddingTop': '1%', 'fontSize': '15px' }}>
                       The given text <q><i>{this.state.sentimentInfo[0].text}</i></q> is <b>{this.state.sentimentInfo[0].sentiment}</b> <i className="fa fa-meh-o fa-2x" style={{'color': 'orange'}}aria-hidden="false"></i> with a polarity of <b>{this.state.sentimentInfo[0].polarity}</b>.
-                    </div> : ""}
-                  </div>
-                  <div className="row">
-                      <div className="col-sm-12 text-muted" style={{
-                        'font-size': '13px',
-                        'padding-top': '10px'
+                    </p> : ""}
+                  
+                    <p className="text-muted" style={{
+                        'fontSize': '13px',
+                        'paddingTop': '10px'
                       }}>
                         Do you find it accurate enough? &nbsp;
                         <a
@@ -313,22 +308,19 @@ class Home extends Component {
                         ><i className="fa fa-thumbs-o-up fa-2x custom-thumb" aria-hidden="true"> </i>
                         </a> &nbsp; &nbsp;
   
-                      <a
+                        <a
                           onClick={this.handleToggle.bind(this, "thumbsDown")}
                           style={{ color: (this.state.activeThumb === 'thumbsDown' ? "cornflowerblue" : "gray") }}
                         >
                           <i className="fa fa-thumbs-o-down fa-2x custom-thumb" aria-hidden="true"></i>
                         </a>
-                      </div>
-                    </div>
-                  <div className="col-sm-12 gender-result">
+                    </p>
+                  <div className="col-sm-12 result">
                     <h5>JSON OUTPUT </h5>
                     <p className="custom-json">{JSON.stringify(this.state.sentimentInfo[0])}</p>
                   </div>
-                </div>
-              </div>) : ""}
-              
-          </div>
+                </div> 
+                </div>) : ""}
         </div>
       </div>
     )

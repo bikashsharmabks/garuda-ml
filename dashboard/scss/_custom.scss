@@ -25,18 +25,15 @@
 }
 
 .custom-text-container {
- padding: 4%;
+  padding-left: 5%;
+  padding-right: 5%;
+  padding-top: 5%;
+  padding-bottom: 5%;
+  height: auto;
 }
 
-.gender-result {
-  margin-top: 3%;
-  padding: 0;
-}
-
-.button-floating-custom2 {
-  width: 0;
-  font-size: 30px;
-}
+.result {
+  margin-top: 4%;}
 
 .custom-text {
   border: 0;
@@ -47,6 +44,7 @@
   font-family: unset;
   outline: none;
 }
+
 .button-floating-custom {
   font-size: 40px;
   padding: 0;
@@ -116,6 +114,8 @@
   font-family: Trebuchet MS;
   color: dimgray;
   justify-content: center;
+  text-align: center;
+  line-height: 2em;
 }
 
 //.custom-button-evaluate:hover {background-color: rgb(128, 128, 128);}
@@ -143,6 +143,15 @@
   background-color: transparent;
 }
 
+.custom-card-media {
+  height : 300px;
+}
+
+@media screen and (max-width: 450px) {
+  .custom-card-media {
+    height: 180px;
+  }
+}
 .smaller {
 	font-size: 40%;
 	font-weight: normal;
