@@ -24,8 +24,8 @@ class Header extends Component {
         <div className="nav navbar nav-item hidden-md-down">
           <div className="h4 mt-auto">Labs AI API<sup style={{
             'color': 'darkgray',
-            'font-size': '12px',
-            'vertical-align': 'super'
+            'fontSize': '12px',
+            'verticalAlign': 'super'
           }}>Beta</sup></div>
         </div>
         <div className="nav navbar-nav hidden-md-down">

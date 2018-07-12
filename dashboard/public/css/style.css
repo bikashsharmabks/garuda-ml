@@ -13833,7 +13833,8 @@ base-chart.chart {
   border: none; }
 
 .custom-thumb:hover {
-  color: cornflowerblue; }
+  color: cornflowerblue;
+  cursor: pointer; }
 
 .custom-thumb:active {
   color: cornflowerblue; }
