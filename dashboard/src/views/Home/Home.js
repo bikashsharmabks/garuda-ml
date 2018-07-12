@@ -37,7 +37,6 @@ class Home extends Component {
     });
   }
   
-
   getGender(event) {
     this.trackUsage('Gender Classification', 'gender click');
     superagent.post('api/gender-classification/predict')
