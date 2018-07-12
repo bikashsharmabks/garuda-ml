@@ -23,11 +23,13 @@ def predict_gender():
 		res = pred.predict_gender(name);
 		result = list(res);
 		if(result[0] == 'female'):
-			result[1] = 100.0 - result[1];
+			result[1] = str(round(100.0 - round(result[1]*100,2)*100,2)) + "%";
+		else:
+			result[1] = str(round(result[1]*100,2)) + " %"	
 		response = Response(response=json.dumps({
         	"name": name,
         	"gender":result[0],
-        	"probability": str(round(result[1]*100,2)) + " %"
+        	"probability": result[1];
         }),
         status=200,
         mimetype='application/json'
