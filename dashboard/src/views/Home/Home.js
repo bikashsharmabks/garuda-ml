@@ -212,7 +212,7 @@ class Home extends Component {
                         'fontSize': '13px',
                         'paddingTop': '10px'
                       }}>
-                        Do you find it accurate enough? &nbsp;
+                        Did you find it accurate enough? &nbsp;
                         <a
                           onClick={this.handleToggle.bind(this, "thumbsUp")}
                           style={{ color: (this.state.activeThumb === 'thumbsUp' ? "cornflowerblue" : "gray") }}
@@ -256,7 +256,7 @@ class Home extends Component {
                         'fontSize': '13px',
                         'paddingTop': '10px'
                       }}>
-                        Do you find it accurate enough? &nbsp;
+                        Did you find it accurate enough? &nbsp;
                         <a
                           onClick={this.handleToggle.bind(this, "thumbsUp")}
                           style={{ color: (this.state.activeThumb === 'thumbsUp' ? "cornflowerblue" : "gray") }}
@@ -300,7 +300,7 @@ class Home extends Component {
                         'fontSize': '13px',
                         'paddingTop': '10px'
                       }}>
-                        Do you find it accurate enough? &nbsp;
+                        Did you find it accurate enough? &nbsp;
                         <a
                           onClick={this.handleToggle.bind(this, "thumbsUp")}
                           style={{ color: (this.state.activeThumb === 'thumbsUp' ? "cornflowerblue" : "gray") }}
