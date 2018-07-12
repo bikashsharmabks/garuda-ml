@@ -6,7 +6,6 @@ import SentimentButton from '../../components/SentimentButton/SentimentButton';
 import CardButton from '../../components/CardButton/CardButton';
 import ReactGA from 'react-ga';
 
-
 class Home extends Component {
   constructor(props) {
     super(props);
@@ -18,11 +17,9 @@ class Home extends Component {
       imageResult: false,
       imageFile: "",
       imageInfo: [],
-      sentimentResult : false
+      sentimentResult : false,
+      activeThumb: ""
     };
-    this.handleChange = this.handleChange.bind(this);
-    this.getGender = this.getGender.bind(this);
-    this.getSentiment = this.getSentiment.bind(this);
     this.trackUsage = this.trackUsage.bind(this);
   }
 
@@ -95,7 +92,6 @@ class Home extends Component {
           console.log(error)
         } else {
           let res = response.body;
-          console.log(res)
           let sentimentInfo = [];
           sentimentInfo.push({
             polarity: res.polarity,
@@ -138,6 +134,12 @@ class Home extends Component {
     });
   }
 
+  handleToggle(activeThumb) {
+      this.setState({
+        activeThumb: activeThumb
+      })
+  }
+
   componentDidMount() { }
 
   render() {
@@ -162,18 +164,18 @@ class Home extends Component {
           <div className="row">
             <div className="col-sm-12" style={{ 'padding': 0 }}>
               {this.state.formName === "gender classification" ?
-                (<form onSubmit={this.getGender}>
+                (<form onSubmit={this.getGender.bind(this)}>
                   <h4>GENDER CLASSIFICATION</h4>
                   <p className="custom-description">Gender classification determines a person's gender, e.g., male or female, based on his or her name.</p>
-                  <input className="custom-text" type="text" placeholder="Enter a name" value={this.state.value} onChange={this.handleChange} />
+                  <input className="custom-text" type="text" placeholder="Enter a name" value={this.state.value} onChange={this.handleChange.bind(this)} />
                   <input className="custom-button-evaluate" type="submit" value="Evaluate" />
                 </form>) : ""}
 
               {this.state.formName === "sentiment-analysis" ?
-                (<form onSubmit={this.getSentiment}>
+                (<form onSubmit={this.getSentiment.bind(this)}>
                   <h4>SENTIMENT ANALYSIS</h4>
                   <p className="custom-description">Classifies the polarity of a given text, sentence or expressed opinion, as positive, negative, or neutral.</p>
-                  <input className="custom-text" type="text" placeholder="Enter some text" value={this.state.value} onChange={this.handleChange} />
+                  <input className="custom-text" type="text" placeholder="Enter some text" value={this.state.value} onChange={this.handleChange.bind(this)} />
                   <input className="custom-button-evaluate" type="submit" value="Evaluate" />
                 </form>) : ""}
 
@@ -208,9 +210,23 @@ class Home extends Component {
                         'font-size': '13px',
                         'padding-top': '10px'
                       }}>
-                        Do you find it accurate enough? &nbsp; <i className="fa fa-thumbs-o-up fa-2x custom-thumb" aria-hidden="true"></i> &nbsp; &nbsp; <i className="fa fa-thumbs-o-down fa-2x custom-thumb"aria-hidden="true"></i>
+                        Do you find it accurate enough? &nbsp;
+                        <a
+                          onClick={this.handleToggle.bind(this, "thumbsUp")}
+                          style={{ color: (this.state.activeThumb === 'thumbsUp' ? "cornflowerblue" : "gray") }}
+
+                        ><i className="fa fa-thumbs-o-up fa-2x custom-thumb" aria-hidden="true"> </i>
+                        </a> &nbsp; &nbsp;
+  
+                      <a
+                          onClick={this.handleToggle.bind(this, "thumbsDown")}
+                          style={{ color: (this.state.activeThumb === 'thumbsDown' ? "cornflowerblue" : "gray") }}
+                        >
+                          <i className="fa fa-thumbs-o-down fa-2x custom-thumb" aria-hidden="true"></i>
+                        </a>
                       </div>
                     </div>
+       
                     <div className="col-sm-12 gender-result">
                       <h5>JSON OUTPUT </h5>
                       <p className="custom-json">{JSON.stringify(this.state.genderInfo[0])}</p>
@@ -241,9 +257,22 @@ class Home extends Component {
                   <div className="row">
                       <div className="col-sm-12 text-muted" style={{
                         'font-size': '13px',
-                        'padding-top': '3px'
+                        'padding-top': '10px'
                       }}>
-                        Do you find it accurate enough? &nbsp; <i className="fa fa-thumbs-o-up fa-2x custom-thumb" aria-hidden="true"></i> &nbsp; &nbsp; <i className="fa fa-thumbs-o-down fa-2x custom-thumb" aria-hidden="true"></i>
+                        Do you find it accurate enough? &nbsp;
+                        <a
+                          onClick={this.handleToggle.bind(this, "thumbsUp")}
+                          style={{ color: (this.state.activeThumb === 'thumbsUp' ? "cornflowerblue" : "gray") }}
+
+                        ><i className="fa fa-thumbs-o-up fa-2x custom-thumb" aria-hidden="true"> </i>
+                        </a> &nbsp; &nbsp;
+  
+                      <a
+                          onClick={this.handleToggle.bind(this, "thumbsDown")}
+                          style={{ color: (this.state.activeThumb === 'thumbsDown' ? "cornflowerblue" : "gray") }}
+                        >
+                          <i className="fa fa-thumbs-o-down fa-2x custom-thumb" aria-hidden="true"></i>
+                        </a>
                       </div>
                   </div>
                   <div className="col-sm-12 gender-result">
@@ -274,9 +303,22 @@ class Home extends Component {
                   <div className="row">
                       <div className="col-sm-12 text-muted" style={{
                         'font-size': '13px',
-                        'padding-top': '3px'
+                        'padding-top': '10px'
                       }}>
-                        Do you find it accurate enough? &nbsp; <i className="fa fa-thumbs-o-up fa-2x custom-thumb" aria-hidden="true"></i> &nbsp; &nbsp; <i className="fa fa-thumbs-o-down fa-2x" style={{'color':'cornflowerblue'}}aria-hidden="true"></i>
+                        Do you find it accurate enough? &nbsp;
+                        <a
+                          onClick={this.handleToggle.bind(this, "thumbsUp")}
+                          style={{ color: (this.state.activeThumb === 'thumbsUp' ? "cornflowerblue" : "gray") }}
+
+                        ><i className="fa fa-thumbs-o-up fa-2x custom-thumb" aria-hidden="true"> </i>
+                        </a> &nbsp; &nbsp;
+  
+                      <a
+                          onClick={this.handleToggle.bind(this, "thumbsDown")}
+                          style={{ color: (this.state.activeThumb === 'thumbsDown' ? "cornflowerblue" : "gray") }}
+                        >
+                          <i className="fa fa-thumbs-o-down fa-2x custom-thumb" aria-hidden="true"></i>
+                        </a>
                       </div>
                     </div>
                   <div className="col-sm-12 gender-result">
