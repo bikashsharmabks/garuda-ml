@@ -27,16 +27,17 @@ class Home extends Component {
     this.setState({ value: event.target.value });
   }
 
-  trackUsage(category, action, value) {
+  trackUsage(category, action, label, value) {
     ReactGA.event({
       category: category,
       action: action,
+      label: label, 
       value: value
     });
   }
   
   getGender(event) {
-    this.trackUsage('Gender Classification', 'gender click', this.state.value);
+    
     var name = this.state.value;
     name = name.split(" ");
     superagent.post('api/gender-classification/predict')
@@ -53,6 +54,7 @@ class Home extends Component {
             gender: res.gender,
             probability: res.probability
           });
+          this.trackUsage('Gender Classification', 'gender click', this.state.value, res.probability);
           this.setState({
             genderResult: true,
             genderInfo: genderInfo,
@@ -63,7 +65,6 @@ class Home extends Component {
   }
 
   onImageDrop(files) {
-    this.trackUsage('Card detection', 'card click', files[0]);
     superagent.post('api/card-detection/predict')
     .attach('file', files[0])
       .end((error, response) => {
@@ -76,6 +77,7 @@ class Home extends Component {
             type: res.predicted_card_type,
             probability: res.probability
           });
+          this.trackUsage('Card detection', 'card click', "image", res.probability);
           this.setState({
             imageFile: files[0],
             imageResult: true,
@@ -87,7 +89,6 @@ class Home extends Component {
 
 
   getSentiment(event) {
-    this.trackUsage('Sentiment Analysis', 'sentiment click', this.state.value);
     superagent.post('api/sentiment-analysis/predict')
     .send({ text: this.state.value })
       .end((error, response) => {
@@ -101,6 +102,7 @@ class Home extends Component {
             sentiment: res.sentiment,
             text: this.state.value
           });
+          this.trackUsage('Sentiment Analysis', 'sentiment click' , this.state.value, res.polarity);
           this.setState({
             sentimentResult: true,
             sentimentInfo: sentimentInfo,
