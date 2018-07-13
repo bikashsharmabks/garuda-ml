@@ -36,8 +36,10 @@ class Home extends Component {
   
   getGender(event) {
     this.trackUsage('Gender Classification', 'gender click');
+    var name = this.state.value;
+    name = name.split(" ");
     superagent.post('api/gender-classification/predict')
-      .send({ name: this.state.value })
+      .send({ name: name[0] })
       .set('Accept', 'application/json')
       .end((error, response) => {
         if (error) {
@@ -170,8 +172,8 @@ class Home extends Component {
               {this.state.formName === "gender classification" ?
                 (<form onSubmit={this.getGender.bind(this)}>
                   <h4>GENDER CLASSIFICATION</h4>
-                  <p className="custom-description">Gender classification determines a person's gender, e.g., male or female, based on his or her name.</p>
-                  <input className="custom-text" type="text" placeholder="Enter a name" value={this.state.value} onChange={this.handleChange.bind(this)} />
+                  <p className="custom-description">Gender classification determines a person's gender, e.g., male or female, based on his or her first name.</p>
+                  <input className="custom-text" type="text" placeholder="Enter first name" value={this.state.value} onChange={this.handleChange.bind(this)} />
                   <input className="custom-button-evaluate" type="submit" value="Evaluate" />
                 </form>) : ""}
 
@@ -194,45 +196,45 @@ class Home extends Component {
                     <p>Drop an image or click to select a file to upload.</p>
                   </Dropzone>
                 </div>) : ""}
-            </div>              
-          </div>
+          </div>              
+        </div>
           {this.state.genderResult === true ?
-              (<div className="row">
-                  <div className="col-sm-12 col-12 result">
-                    <h5>RESULT </h5>
-                    {this.state.genderInfo[0].gender === 'male' ?
-                      (<p style={{ 'fontSize': '15px' }}>
-                        <i>{this.state.genderInfo[0].name.charAt(0).toUpperCase() + this.state.genderInfo[0].name.slice(1)}</i> is <b>{this.state.genderInfo[0].gender}</b> &nbsp; <i className="fa fa-male fa-2x" aria-hidden="false" style={{ 'color': '#2072d8' }}></i>
-                        &nbsp; with a <b>{this.state.genderInfo[0].probability}</b> probability. </p>) :
-                      (<p style={{ 'fontSize': '15px' }}>
-                        <i>{this.state.genderInfo[0].name.charAt(0).toUpperCase() + this.state.genderInfo[0].name.slice(1)}</i> is <b>{this.state.genderInfo[0].gender}</b> <i className="fa fa-female fa-2x" aria-hidden="false" style={{ 'color': 'pink' }}></i>
-                        &nbsp; with a <b>{this.state.genderInfo[0].probability}</b> probability. </p>)
-                    }
-                      <p className="text-muted" style={{
-                        'fontSize': '13px',
-                        'paddingTop': '10px'
-                      }}>
-                        Did you find it accurate enough? &nbsp;
+            (<div className="row">
+              <div className="col-sm-12 col-12 result">
+                <h5>RESULT </h5>
+                {this.state.genderInfo[0].gender === 'male' ?
+                  (<p style={{ 'fontSize': '15px' }}>
+                    <i>{this.state.genderInfo[0].name.charAt(0).toUpperCase() + this.state.genderInfo[0].name.slice(1)}</i> is <b>{this.state.genderInfo[0].gender}</b> &nbsp; <i className="fa fa-male fa-2x" aria-hidden="false" style={{ 'color': '#2072d8' }}></i>
+                    &nbsp; with a <b>{this.state.genderInfo[0].probability}</b> probability. </p>) :
+                  (<p style={{ 'fontSize': '15px' }}>
+                    <i>{this.state.genderInfo[0].name.charAt(0).toUpperCase() + this.state.genderInfo[0].name.slice(1)}</i> is <b>{this.state.genderInfo[0].gender}</b> <i className="fa fa-female fa-2x" aria-hidden="false" style={{ 'color': 'pink' }}></i>
+                    &nbsp; with a <b>{this.state.genderInfo[0].probability}</b> probability. </p>)
+                }
+                <p className="text-muted" style={{
+                  'fontSize': '13px',
+                  'paddingTop': '10px'
+                }}>
+                  Did you find it accurate enough? &nbsp;
                         <a
-                          onClick={this.handleToggle.bind(this, "thumbsUp")}
-                          style={{ color: (this.state.activeThumb === 'thumbsUp' ? "cornflowerblue" : "gray") }}
+                    onClick={this.handleToggle.bind(this, "thumbsUp")}
+                    style={{ color: (this.state.activeThumb === 'thumbsUp' ? "cornflowerblue" : "gray") }}
 
-                        ><i className="fa fa-thumbs-o-up fa-2x custom-thumb" aria-hidden="true"> </i>
-                        </a> &nbsp; &nbsp;
+                  ><i className="fa fa-thumbs-o-up fa-2x custom-thumb" aria-hidden="true"> </i>
+                  </a> &nbsp; &nbsp;
                       <a
-                          onClick={this.handleToggle.bind(this, "thumbsDown")}
-                          style={{ color: (this.state.activeThumb === 'thumbsDown' ? "cornflowerblue" : "gray") }}
-                        >
-                          <i className="fa fa-thumbs-o-down fa-2x custom-thumb" aria-hidden="true"></i>
-                        </a>
-                    </p>
-       
-                    <div className="result">
-                      <h5>JSON OUTPUT </h5>
-                      <p className="custom-json">{JSON.stringify(this.state.genderInfo[0])}</p>
-                    </div>
-                  </div>
-                  </div>) : ""}
+                    onClick={this.handleToggle.bind(this, "thumbsDown")}
+                    style={{ color: (this.state.activeThumb === 'thumbsDown' ? "cornflowerblue" : "gray") }}
+                  >
+                    <i className="fa fa-thumbs-o-down fa-2x custom-thumb" aria-hidden="true"></i>
+                  </a>
+                </p>
+
+                <div className="result">
+                  <h5>JSON OUTPUT </h5>
+                  <p className="custom-json">{JSON.stringify(this.state.genderInfo[0])}</p>
+                </div>
+              </div>
+            </div>) : ""}
                       
             {this.state.imageResult === true ?
               (<div className="row">
@@ -279,8 +281,7 @@ class Home extends Component {
               </div>) : ""}
 
             {this.state.sentimentResult === true ?
-              (
-                <div className="row">
+              (<div className="row">
                   <div className="col-sm-12 result">
                     <h5>RESULT </h5>
                     {this.state.sentimentInfo[0].sentiment === 'positive' ?
@@ -315,11 +316,11 @@ class Home extends Component {
                           <i className="fa fa-thumbs-o-down fa-2x custom-thumb" aria-hidden="true"></i>
                         </a>
                     </p>
-                  <div className="col-sm-12 result">
+                    <div className="result">
                     <h5>JSON OUTPUT </h5>
                     <p className="custom-json">{JSON.stringify(this.state.sentimentInfo[0])}</p>
-                  </div>
-                </div> 
+                    </div>
+                  </div> 
                 </div>) : ""}
         </div>
       </div>
