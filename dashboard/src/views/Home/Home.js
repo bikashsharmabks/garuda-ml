@@ -37,9 +37,9 @@ class Home extends Component {
   }
   
   getGender(event) {
-    
     var name = this.state.value;
     name = name.split(" ");
+    event.preventDefault();
     superagent.post('api/gender-classification/predict')
       .send({ name: name[0] })
       .set('Accept', 'application/json')
@@ -65,6 +65,7 @@ class Home extends Component {
   }
 
   onImageDrop(files) {
+    event.preventDefault();
     superagent.post('api/card-detection/predict')
     .attach('file', files[0])
       .end((error, response) => {
@@ -89,6 +90,7 @@ class Home extends Component {
 
 
   getSentiment(event) {
+    event.preventDefault();
     superagent.post('api/sentiment-analysis/predict')
     .send({ text: this.state.value })
       .end((error, response) => {
