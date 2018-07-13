@@ -27,15 +27,16 @@ class Home extends Component {
     this.setState({ value: event.target.value });
   }
 
-  trackUsage(category, action) {
+  trackUsage(category, action, value) {
     ReactGA.event({
       category: category,
       action: action,
+      value: value
     });
   }
   
   getGender(event) {
-    this.trackUsage('Gender Classification', 'gender click');
+    this.trackUsage('Gender Classification', 'gender click', this.state.value);
     var name = this.state.value;
     name = name.split(" ");
     superagent.post('api/gender-classification/predict')
@@ -62,7 +63,7 @@ class Home extends Component {
   }
 
   onImageDrop(files) {
-    this.trackUsage('Card detection', 'card click');
+    this.trackUsage('Card detection', 'card click', files[0]);
     superagent.post('api/card-detection/predict')
     .attach('file', files[0])
       .end((error, response) => {
@@ -86,7 +87,7 @@ class Home extends Component {
 
 
   getSentiment(event) {
-    this.trackUsage('Sentiment Analysis', 'sentiment click');
+    this.trackUsage('Sentiment Analysis', 'sentiment click', this.state.value);
     superagent.post('api/sentiment-analysis/predict')
     .send({ text: this.state.value })
       .end((error, response) => {
