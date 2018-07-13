@@ -65,7 +65,7 @@ class Home extends Component {
   }
 
   onImageDrop(files) {
-    event.preventDefault();
+    //event.preventDefault();
     superagent.post('api/card-detection/predict')
     .attach('file', files[0])
       .end((error, response) => {
