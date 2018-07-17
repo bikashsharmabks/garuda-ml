@@ -4,10 +4,10 @@ class CardButton extends Component {
 
     render() {
         return (
-            <div className="col-sm-4 col-12" style={{'height':'300px'}}>
+            <div className="col-sm-4 col-12 custom-card-media">
                 <div className="card custom-card">
                     <div className="card-body text-center">
-                        <h5 className="card-title custom-card-title">Card<br />Detection</h5>
+                        <h5 className="card-title custom-card-title">Card Detection</h5>
                         <button type="button" className="btn-floating button-floating-custom">
                             <i className="fa fa-credit-card custom-icon" aria-hidden="false"></i>
                         </button>

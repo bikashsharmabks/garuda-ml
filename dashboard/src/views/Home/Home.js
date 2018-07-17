@@ -27,17 +27,21 @@ class Home extends Component {
     this.setState({ value: event.target.value });
   }
 
-  trackUsage(category, action) {
+  trackUsage(category, action, label, value) {
     ReactGA.event({
       category: category,
       action: action,
+      label: label, 
+      value: value
     });
   }
   
   getGender(event) {
-    this.trackUsage('Gender Classification', 'gender click');
+    var name = this.state.value;
+    name = name.split(" ");
+    event.preventDefault();
     superagent.post('api/gender-classification/predict')
-      .send({ name: this.state.value })
+      .send({ name: name[0] })
       .set('Accept', 'application/json')
       .end((error, response) => {
         if (error) {
@@ -50,6 +54,7 @@ class Home extends Component {
             gender: res.gender,
             probability: res.probability
           });
+          this.trackUsage('Gender Classification', 'gender click', this.state.value, res.probability);
           this.setState({
             genderResult: true,
             genderInfo: genderInfo,
@@ -60,7 +65,7 @@ class Home extends Component {
   }
 
   onImageDrop(files) {
-    this.trackUsage('Card detection', 'card click');
+    //event.preventDefault();
     superagent.post('api/card-detection/predict')
     .attach('file', files[0])
       .end((error, response) => {
@@ -73,6 +78,7 @@ class Home extends Component {
             type: res.predicted_card_type,
             probability: res.probability
           });
+          this.trackUsage('Card detection', 'card click', "image", res.probability);
           this.setState({
             imageFile: files[0],
             imageResult: true,
@@ -84,7 +90,7 @@ class Home extends Component {
 
 
   getSentiment(event) {
-    this.trackUsage('Sentiment Analysis', 'sentiment click');
+    event.preventDefault();
     superagent.post('api/sentiment-analysis/predict')
     .send({ text: this.state.value })
       .end((error, response) => {
@@ -98,6 +104,7 @@ class Home extends Component {
             sentiment: res.sentiment,
             text: this.state.value
           });
+          this.trackUsage('Sentiment Analysis', 'sentiment click' , this.state.value, res.polarity);
           this.setState({
             sentimentResult: true,
             sentimentInfo: sentimentInfo,
@@ -112,7 +119,8 @@ class Home extends Component {
       formName: 'gender classification',
       imageResult: false,
       genderResult: false,
-      sentimentResult: false
+      sentimentResult: false,
+      activeThumb: ""
     });
   }
 
@@ -121,7 +129,8 @@ class Home extends Component {
       formName: 'sentiment-analysis',
       imageResult: false,
       genderResult: false,
-      sentimentResult: false
+      sentimentResult: false,
+      activeThumb: ""
     });
   }
 
@@ -130,7 +139,8 @@ class Home extends Component {
       formName: 'image classification',
       imageResult: false,
       genderResult: false,
-      sentimentResult: false
+      sentimentResult: false,
+      activeThumb: ""
     });
   }
 
@@ -154,20 +164,21 @@ class Home extends Component {
         <div className="custom-container">
           <div className="container clearfix">
             <div className="row">
-              <GenderButton handleGenderClick={this.handleGenderClick.bind(this)} />
-              <SentimentButton handleTextClick={this.handleTextClick.bind(this)} />
+              <GenderButton handleGenderClick={this.handleGenderClick.bind(this)} />      
               <CardButton handleImageClick={this.handleImageClick.bind(this)} />
+              <SentimentButton handleTextClick={this.handleTextClick.bind(this)} />   
             </div>
           </div>
         </div>
-        <div className="container custom-text-container">
+
+        <div className="custom-text-container">
           <div className="row">
-            <div className="col-sm-12" style={{ 'padding': 0 }}>
+            <div className="col-sm-12 col-12">
               {this.state.formName === "gender classification" ?
                 (<form onSubmit={this.getGender.bind(this)}>
                   <h4>GENDER CLASSIFICATION</h4>
-                  <p className="custom-description">Gender classification determines a person's gender, e.g., male or female, based on his or her name.</p>
-                  <input className="custom-text" type="text" placeholder="Enter a name" value={this.state.value} onChange={this.handleChange.bind(this)} />
+                  <p className="custom-description">Gender classification determines a person's gender, e.g., male or female, based on his or her first name.</p>
+                  <input className="custom-text" type="text" placeholder="Enter first name" value={this.state.value} onChange={this.handleChange.bind(this)} />
                   <input className="custom-button-evaluate" type="submit" value="Evaluate" />
                 </form>) : ""}
 
@@ -190,76 +201,69 @@ class Home extends Component {
                     <p>Drop an image or click to select a file to upload.</p>
                   </Dropzone>
                 </div>) : ""}
-            </div>
-
-            {this.state.genderResult === true ?
-              (<div className="container text-container">
-                <div className="row">
-                  <div className="col-sm-12 gender-result">
-                    <h5>RESULT </h5>
-                    {this.state.genderInfo[0].gender === 'male' ?
-                      (<div style={{ 'font-size': '15px' }}>
-                        <i>{this.state.genderInfo[0].name.charAt(0).toUpperCase() + this.state.genderInfo[0].name.slice(1)}</i> is <b>{this.state.genderInfo[0].gender}</b> &nbsp; <i className="fa fa-male fa-2x" aria-hidden="false" style={{ 'color': '#2072d8' }}></i>
-                        &nbsp; with a <b>{this.state.genderInfo[0].probability}</b> probability. </div>) :
-                      (<div style={{ 'font-size': '15px' }}>
-                        <i>{this.state.genderInfo[0].name.charAt(0).toUpperCase() + this.state.genderInfo[0].name.slice(1)}</i> is <b>{this.state.genderInfo[0].gender}</b> <i className="fa fa-female fa-2x" aria-hidden="false" style={{ 'color': 'pink' }}></i>
-                        &nbsp; with a <b>{this.state.genderInfo[0].probability}</b> probability. </div>)
-                    }
-                    <div className="row">
-                      <div className="col-sm-12 text-muted" style={{
-                        'font-size': '13px',
-                        'padding-top': '10px'
-                      }}>
-                        Do you find it accurate enough? &nbsp;
+          </div>              
+        </div>
+          {this.state.genderResult === true ?
+            (<div className="row">
+              <div className="col-sm-12 col-12 result">
+                <h5>RESULT </h5>
+                {this.state.genderInfo[0].gender === 'male' ?
+                  (<p style={{ 'fontSize': '15px' }}>
+                    <i>{this.state.genderInfo[0].name.charAt(0).toUpperCase() + this.state.genderInfo[0].name.slice(1)}</i> is <b>{this.state.genderInfo[0].gender}</b> &nbsp; <i className="fa fa-male fa-2x" aria-hidden="false" style={{ 'color': '#2072d8' }}></i>
+                    &nbsp; with a <b>{this.state.genderInfo[0].probability}</b> probability. </p>) :
+                  (<p style={{ 'fontSize': '15px' }}>
+                    <i>{this.state.genderInfo[0].name.charAt(0).toUpperCase() + this.state.genderInfo[0].name.slice(1)}</i> is <b>{this.state.genderInfo[0].gender}</b> <i className="fa fa-female fa-2x" aria-hidden="false" style={{ 'color': 'pink' }}></i>
+                    &nbsp; with a <b>{this.state.genderInfo[0].probability}</b> probability. </p>)
+                }
+                <p className="text-muted" style={{
+                  'fontSize': '13px',
+                  'paddingTop': '10px'
+                }}>
+                  Did you find it accurate enough? &nbsp;
                         <a
-                          onClick={this.handleToggle.bind(this, "thumbsUp")}
-                          style={{ color: (this.state.activeThumb === 'thumbsUp' ? "cornflowerblue" : "gray") }}
+                    onClick={this.handleToggle.bind(this, "thumbsUp")}
+                    style={{ color: (this.state.activeThumb === 'thumbsUp' ? "cornflowerblue" : "gray") }}
 
-                        ><i className="fa fa-thumbs-o-up fa-2x custom-thumb" aria-hidden="true"> </i>
-                        </a> &nbsp; &nbsp;
-  
+                  ><i className="fa fa-thumbs-o-up fa-2x custom-thumb" aria-hidden="true"> </i>
+                  </a> &nbsp; &nbsp;
                       <a
-                          onClick={this.handleToggle.bind(this, "thumbsDown")}
-                          style={{ color: (this.state.activeThumb === 'thumbsDown' ? "cornflowerblue" : "gray") }}
-                        >
-                          <i className="fa fa-thumbs-o-down fa-2x custom-thumb" aria-hidden="true"></i>
-                        </a>
-                      </div>
-                    </div>
-       
-                    <div className="col-sm-12 gender-result">
-                      <h5>JSON OUTPUT </h5>
-                      <p className="custom-json">{JSON.stringify(this.state.genderInfo[0])}</p>
-                    </div>
-                  </div>
-                </div>
-              </div>) : ""}
+                    onClick={this.handleToggle.bind(this, "thumbsDown")}
+                    style={{ color: (this.state.activeThumb === 'thumbsDown' ? "cornflowerblue" : "gray") }}
+                  >
+                    <i className="fa fa-thumbs-o-down fa-2x custom-thumb" aria-hidden="true"></i>
+                  </a>
+                </p>
 
+                <div className="result">
+                  <h5>JSON OUTPUT </h5>
+                  <p className="custom-json">{JSON.stringify(this.state.genderInfo[0])}</p>
+                </div>
+              </div>
+            </div>) : ""}
+                      
             {this.state.imageResult === true ?
-              (<div className="container text-container">
-                <div className="row">
-                  <div className="col-sm-12 gender-result">
+              (<div className="row">
+                  <div className="col-sm-12 result">
                     <h5>RESULT </h5>
                     <img src={this.state.imageFile.preview} style={{ 'max-width': '200px', 'max-height': '150px' }} alt="img.jpg"></img>
                     {this.state.imageInfo[0].type === 'driving license' ?
-                      <div style={{ 'padding-top': '1%', 'font-size': '15px' }}>
+                      <p style={{ 'paddingTop': '1%', 'fontSize': '15px' }}>
                         <b>{this.state.imageInfo[0].type.charAt(0).toUpperCase() + this.state.imageInfo[0].type.slice(1)}</b> <i className="fa fa-credit-card fa-2x" style={{ 'color': 'gray' }} aria-hidden="false"></i> with a <b>{this.state.imageInfo[0].probability}</b> probability.
-                    </div> : ""}
+                    </p> : ""}
                     {this.state.imageInfo[0].type === 'financial card' ?
-                      <div style={{ 'padding-top': '1%', 'font-size': '15px' }}>
+                      <p style={{ 'paddingTop': '1%', 'fontSize': '15px' }}>
                         <b>{this.state.imageInfo[0].type.charAt(0).toUpperCase() + this.state.imageInfo[0].type.slice(1)}</b> <i className="fa fa-credit-card fa-2x" style={{ 'color': 'gray' }} aria-hidden="false"></i> with a <b>{this.state.imageInfo[0].probability}</b> probability.
-                    </div> : ""}
+                    </p> : ""}
                     {this.state.imageInfo[0].type === 'text' ?
-                      <div style={{ 'padding-top': '1%', 'font-size': '15px' }}>
+                      <p style={{ 'paddingTop': '1%', 'fontSize': '15px' }}>
                         <b>{this.state.imageInfo[0].type.charAt(0).toUpperCase() + this.state.imageInfo[0].type.slice(1)}</b> <i className="fa fa-file-text-o fa-2x" style={{ 'color': 'gray' }} aria-hidden="false"></i> with a <b>{this.state.imageInfo[0].probability}</b> probability.
-                    </div> : ""}
-                  </div>
-                  <div className="row">
-                      <div className="col-sm-12 text-muted" style={{
-                        'font-size': '13px',
-                        'padding-top': '10px'
+                    </p> : ""}
+                  
+                    <p className="text-muted" style={{
+                        'fontSize': '13px',
+                        'paddingTop': '10px'
                       }}>
-                        Do you find it accurate enough? &nbsp;
+                        Did you find it accurate enough? &nbsp;
                         <a
                           onClick={this.handleToggle.bind(this, "thumbsUp")}
                           style={{ color: (this.state.activeThumb === 'thumbsUp' ? "cornflowerblue" : "gray") }}
@@ -273,9 +277,8 @@ class Home extends Component {
                         >
                           <i className="fa fa-thumbs-o-down fa-2x custom-thumb" aria-hidden="true"></i>
                         </a>
-                      </div>
-                  </div>
-                  <div className="col-sm-12 gender-result">
+                  </p>
+                  <div className="result">
                     <h5>JSON OUTPUT </h5>
                     <p className="custom-json">{JSON.stringify(this.state.imageInfo[0])}</p>
                   </div>
@@ -283,29 +286,27 @@ class Home extends Component {
               </div>) : ""}
 
             {this.state.sentimentResult === true ?
-              (<div className="container text-container">
-                <div className="row">
-                  <div className="col-sm-12 gender-result">
+              (<div className="row">
+                  <div className="col-sm-12 result">
                     <h5>RESULT </h5>
                     {this.state.sentimentInfo[0].sentiment === 'positive' ?
-                    <div style={{ 'padding-top': '1%', 'font-size': '15px' }}>
+                    <p style={{ 'paddingTop': '1%', 'fontSize': '15px' }}>
                       The given text <q><i>{this.state.sentimentInfo[0].text}</i></q> is <b>{this.state.sentimentInfo[0].sentiment}</b> <i className="fa fa-smile-o fa-2x" style={{'color': 'forestgreen'}}aria-hidden="false"></i> with a polarity of <b>{this.state.sentimentInfo[0].polarity}</b>.
-                    </div> : ""}
+                    </p> : ""}
                     {this.state.sentimentInfo[0].sentiment === 'negative' ?
-                    <div style={{ 'padding-top': '1%', 'font-size': '15px' }}>
+                    <p style={{ 'paddingTop': '1%', 'fontSize': '15px' }}>
                       The given text <q><i>{this.state.sentimentInfo[0].text}</i></q> is <b>{this.state.sentimentInfo[0].sentiment}</b> <i className="fa fa-frown-o fa-2x" style={{'color': 'deeppink'}}aria-hidden="false"></i> with a polarity of <b>{this.state.sentimentInfo[0].polarity}</b>.
-                    </div> : ""}
+                    </p> : ""}
                     {this.state.sentimentInfo[0].sentiment === 'neutral' ?
-                    <div style={{ 'padding-top': '1%', 'font-size': '15px' }}>
+                    <p style={{ 'paddingTop': '1%', 'fontSize': '15px' }}>
                       The given text <q><i>{this.state.sentimentInfo[0].text}</i></q> is <b>{this.state.sentimentInfo[0].sentiment}</b> <i className="fa fa-meh-o fa-2x" style={{'color': 'orange'}}aria-hidden="false"></i> with a polarity of <b>{this.state.sentimentInfo[0].polarity}</b>.
-                    </div> : ""}
-                  </div>
-                  <div className="row">
-                      <div className="col-sm-12 text-muted" style={{
-                        'font-size': '13px',
-                        'padding-top': '10px'
+                    </p> : ""}
+                  
+                    <p className="text-muted" style={{
+                        'fontSize': '13px',
+                        'paddingTop': '10px'
                       }}>
-                        Do you find it accurate enough? &nbsp;
+                        Did you find it accurate enough? &nbsp;
                         <a
                           onClick={this.handleToggle.bind(this, "thumbsUp")}
                           style={{ color: (this.state.activeThumb === 'thumbsUp' ? "cornflowerblue" : "gray") }}
@@ -313,22 +314,19 @@ class Home extends Component {
                         ><i className="fa fa-thumbs-o-up fa-2x custom-thumb" aria-hidden="true"> </i>
                         </a> &nbsp; &nbsp;
   
-                      <a
+                        <a
                           onClick={this.handleToggle.bind(this, "thumbsDown")}
                           style={{ color: (this.state.activeThumb === 'thumbsDown' ? "cornflowerblue" : "gray") }}
                         >
                           <i className="fa fa-thumbs-o-down fa-2x custom-thumb" aria-hidden="true"></i>
                         </a>
-                      </div>
-                    </div>
-                  <div className="col-sm-12 gender-result">
+                    </p>
+                    <div className="result">
                     <h5>JSON OUTPUT </h5>
                     <p className="custom-json">{JSON.stringify(this.state.sentimentInfo[0])}</p>
-                  </div>
-                </div>
-              </div>) : ""}
-              
-          </div>
+                    </div>
+                  </div> 
+                </div>) : ""}
         </div>
       </div>
     )
