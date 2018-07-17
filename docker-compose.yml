@@ -74,7 +74,7 @@ services:
     volumes:
        - ./garuda-proxy/nginx.conf:/etc/nginx/conf.d/default.conf
        - ./dashboard/build:/app/www
-       - /p10lab:/p10lab/app/www
+       - ~/project/p10lab:/p10lab/app/www
     depends_on:
       - gender-classification
       - card-detection
